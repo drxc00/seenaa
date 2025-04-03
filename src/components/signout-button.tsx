@@ -6,10 +6,10 @@ import { Loader2, LogOutIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export function LogoutButton() {
+export function SignOutButton() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogout = async () => {
+  const handleSignOut = async () => {
     try {
       await authClient.signOut({
         fetchOptions: {
@@ -32,10 +32,9 @@ export function LogoutButton() {
   };
   return (
     <Button
-      className="w-full"
       variant="outline"
-      size="sm"
-      onClick={handleLogout}
+      size="lg"
+      onClick={handleSignOut}
       disabled={isLoading}
     >
       {isLoading ? (
@@ -43,7 +42,7 @@ export function LogoutButton() {
       ) : (
         <>
           <LogOutIcon className="h-4 w-4" />
-          <span className="text-md font-semibold">Logout</span>
+          <span className="text-md font-semibold">Sign Out</span>
         </>
       )}
     </Button>

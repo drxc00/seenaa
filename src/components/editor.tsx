@@ -98,7 +98,7 @@ export function Editor({ post }: EditorProps) {
         <div className="sticky top-4 z-50 transition-all duration-300 ease-in-out transform px-4">
           <Card className="p-0 backdrop-blur-sm shadow-lg rounded-lg">
             <CardContent className="p-2 flex items-center justify-between">
-              <NextLink href="/dashboard/posts">
+              <NextLink href="/home">
                 <Button variant="outline">
                   <ChevronLeft className="h-4 w-4" />
                   <span>Back</span>

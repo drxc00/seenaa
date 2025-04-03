@@ -1,40 +1,49 @@
+import { Icon } from "@/components/icon";
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
+import { getAuthData } from "@/data/auth-data";
+import { SignOutButton } from "@/components/signout-button";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const authData = await getAuthData();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <section className="w-full">
-        <div className="container px-4 md:px-6 items-center justify-center flex flex-col">
-          <div className="gap-6 w-full max-w-4xl">
-            <div className="flex flex-col items-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold text-center tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Tell your story, inspire others, and leave a lasting legacy.
-                </h1>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl text-center mx-auto">
-                  Seenaa is an open source blogging platform designed to help
-                  you share your voice with the world.
-                </p>
-              </div>
-              <div className="flex gap-4 justify-center">
-                <Button asChild size="lg">
-                  <Link href="#get-started">Start Blogging</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <Link
-                    href="https://github.com"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Github className="mr-2 h-4 w-4" />
-                    View on GitHub
-                  </Link>
-                </Button>
-              </div>
-            </div>
+    <main className="min-h-screen flex items-center justify-center p-4">
+      <section className="max-w-md w-full space-y-6">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <Icon />
+          <div className="space-y-1">
+            <h1 className="text-2xl font-medium tracking-tight">seenaa</h1>
+            <p className="text-muted-foreground">
+              When you&apos;re bored and want to write something
+            </p>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {authData?.session ? (
+            <>
+              <Link href="/home">
+                <Button size="lg" className="w-full">
+                  Go to Home
+                </Button>
+              </Link>
+              <SignOutButton />
+            </>
+          ) : (
+            <>
+              <Link href="/signin">
+                <Button size="lg" className="w-full">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="lg" variant="outline" className="w-full">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </section>
     </main>

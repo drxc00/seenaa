@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 
-export default async function PostsPage() {
+export default async function dashboard() {
   const authData = await auth.api.getSession({
     headers: await headers(),
   });
@@ -18,9 +18,9 @@ export default async function PostsPage() {
     <main className="w-full flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl ">posts</h1>
-        <CreateNewPostButton />
       </div>
       <div className="grid grid-cols-4 gap-2">
+        <CreateNewPostButton />
         {posts.map((post) => (
           <Card key={post.id} className="p-0">
             <CardContent className="p-4 flex flex-col gap-4">

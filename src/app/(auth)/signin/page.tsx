@@ -17,7 +17,7 @@ export default async function SignInPage() {
   });
 
   /** If session exists, redirect to dashboard */
-  if (session) redirect("/dashboard");
+  if (session) redirect("/home");
 
   return (
     <main className="flex flex-col gap-6 w-full items-center justify-center min-h-screen p-4 bg-muted">

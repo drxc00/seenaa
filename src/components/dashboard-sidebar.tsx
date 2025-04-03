@@ -16,7 +16,7 @@ import {
   Paperclip,
 } from "lucide-react";
 import { PiPaperPlaneThin } from "react-icons/pi";
-import { LogoutButton } from "./logout-button";
+import { SignOutButton } from "./signout-button";
 
 const menus = [
   {
@@ -81,7 +81,7 @@ export function DashboardSidebar() {
             © {new Date().getFullYear()} seenaa. All rights reserved.
           </div>
         </div>
-        <LogoutButton />
+        <SignOutButton />
       </SidebarFooter>
     </Sidebar>
   );

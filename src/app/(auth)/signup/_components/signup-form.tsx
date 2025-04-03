@@ -44,8 +44,8 @@ export function SignupForm() {
           password: data.password,
           name: data.name,
           image: "",
-          /** Automatically redirect to /dashboard after signUp */
-          callbackURL: "/dashboard",
+          /** Automatically redirect to main after signUp */
+          callbackURL: "/home",
         },
         {
           onError(ctx) {
@@ -58,7 +58,7 @@ export function SignupForm() {
             setLoading(true);
           },
           onSuccess() {
-            router.push("/dashboard");
+            router.push("/home");
           },
         }
       );

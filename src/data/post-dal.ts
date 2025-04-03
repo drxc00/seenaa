@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "@/db/drizzle";
 import { post } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export async function getPostData(postId: string) {
   const postData = await db
@@ -16,6 +16,10 @@ export async function getPostData(postId: string) {
 }
 
 export async function getUserPosts(userId: string) {
-  const userPosts = await db.select().from(post).where(eq(post.userId, userId));
+  const userPosts = await db
+    .select()
+    .from(post)
+    .where(eq(post.userId, userId))
+    .orderBy(desc(post.createdAt));
   return userPosts;
 }

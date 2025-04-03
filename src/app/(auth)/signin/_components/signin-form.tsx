@@ -34,13 +34,13 @@ export function SignInForm() {
       await authClient.signIn.email({
         email: data.email,
         password: data.password,
-        callbackURL: "/dashboard",
+        callbackURL: "/home",
         fetchOptions: {
           onRequest: () => {
             setIsLoading(true);
           },
           onSuccess: () => {
-            window.location.href = "/dashboard";
+            window.location.href = "/home";
           },
           onError: (ctx) => {
             setIsLoading(false);
