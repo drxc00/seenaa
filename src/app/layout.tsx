@@ -4,7 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 const raleway = Raleway({
-  variable: "--font-raleWay",
+  variable: "--font-raleway",
 });
 
 export const metadata: Metadata = {
