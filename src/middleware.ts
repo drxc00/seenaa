@@ -26,6 +26,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const newUrl = `/${blogDomain}${pathname}`;
   // Redirect the user to /[blogDomain]
-  return NextResponse.rewrite(new URL(`/${blogDomain}${pathname}`, req.url));
+  return NextResponse.rewrite(new URL(newUrl, req.url));
 }

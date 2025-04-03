@@ -11,16 +11,18 @@ import { SaveShortcut, TitleNode } from "@/lib/editor-extensions";
 import { useAction } from "next-safe-action/hooks";
 import { savePostContent } from "@/app/(server)/actions/posts-actions";
 import { toast } from "sonner";
-import { ChevronLeft, Loader2, PenBox, Trash2 } from "lucide-react";
+import { ChevronLeft, Loader2, Trash2 } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import NextLink from "next/link";
+import { PublishButton, UnPublishButton } from "./publishing-buttons";
 
 interface EditorProps {
   post?: {
     postTitle: string;
     postId: string;
     postContent: string | null;
+    postPublished: boolean;
   };
 }
 
@@ -110,10 +112,11 @@ export function Editor({ post }: EditorProps) {
                   <Trash2 className="h-4 w-4" />
                   <span>Delete</span>
                 </Button>
-                <Button>
-                  <PenBox className="h-4 w-4" />
-                  <span>Publish</span>
-                </Button>
+                {post?.postPublished ? (
+                  <UnPublishButton postId={post.postId} />
+                ) : (
+                  <PublishButton postId={post?.postId as string} />
+                )}
               </div>
             </CardContent>
           </Card>

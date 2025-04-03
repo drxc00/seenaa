@@ -3,6 +3,7 @@
 import { db } from "@/db/drizzle";
 import { post } from "@/db/schema";
 import { withAuthActions } from "@/lib/safe-actions";
+import { generateSlug } from "@/utils/post-utils";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -55,7 +56,60 @@ export const savePostContent = withAuthActions
         .set({
           title: title,
           content: contentWithoutTitle,
+          slug: generateSlug(title),
           updatedAt: new Date(),
+        })
+        .where(eq(post.id, postId));
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  });
+
+export const publishPost = withAuthActions
+  .schema(
+    z.object({
+      postId: z.string(),
+    })
+  )
+  .action(async ({ parsedInput: { postId } }) => {
+    try {
+      await db
+        .update(post)
+        .set({
+          published: true,
+        })
+        .where(eq(post.id, postId));
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  });
+
+export const unPublishPost = withAuthActions
+  .schema(
+    z.object({
+      postId: z.string(),
+    })
+  )
+  .action(async ({ parsedInput: { postId } }) => {
+    try {
+      await db
+        .update(post)
+        .set({
+          published: false,
         })
         .where(eq(post.id, postId));
 
