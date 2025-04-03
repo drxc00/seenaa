@@ -13,7 +13,6 @@ import { Card, CardContent } from "./ui/card";
 import {
   Cog,
   LayoutGrid,
-  NotepadTextDashed,
   Paperclip,
 } from "lucide-react";
 import { PiPaperPlaneThin } from "react-icons/pi";
@@ -29,11 +28,6 @@ const menus = [
     name: "Posts",
     href: "/dashboard/posts",
     icon: Paperclip,
-  },
-  {
-    name: "Drafts",
-    href: "/dashboard/drafts",
-    icon: NotepadTextDashed,
   },
   {
     name: "Settings",

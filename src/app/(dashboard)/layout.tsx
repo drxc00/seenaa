@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider className="bg-muted" >
       <DashboardSidebar />
-      <main className="p-2">
+      <main className="p-6 w-full">
         {children}
       </main>
     </SidebarProvider>
