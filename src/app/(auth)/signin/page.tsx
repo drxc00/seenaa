@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import {
   Card,
   CardContent,
@@ -5,19 +6,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SignupForm } from "./_components/signup-form";
-import { Icon } from "@/components/icon";
-import { headers } from "next/headers";
+import { SignInForm } from "./_components/signin-form";
 import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function SignUpPage() {
+export default async function SignInPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   /** If session exists, redirect to dashboard */
   if (session) redirect("/dashboard");
+
   return (
     <main className="flex flex-col gap-6 w-full items-center justify-center min-h-screen p-4 bg-muted">
       <div className="flex flex-col items-center gap-2">
@@ -27,14 +28,14 @@ export default async function SignUpPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
-            Sign Up
+            Sign In
           </CardTitle>
           <CardDescription>
-            Create an account to start your blogging journey.
+            Sign in to your account to continue your blogging journey.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignupForm />
+          <SignInForm />
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">

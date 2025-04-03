@@ -10,8 +10,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Card, CardContent } from "./ui/card";
-import { Cog, LayoutGrid, NotepadTextDashed, Paperclip } from "lucide-react";
+import {
+  Cog,
+  LayoutGrid,
+  NotepadTextDashed,
+  Paperclip,
+} from "lucide-react";
 import { PiPaperPlaneThin } from "react-icons/pi";
+import { LogoutButton } from "./logout-button";
 
 const menus = [
   {
@@ -71,7 +77,18 @@ export function DashboardSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter className="flex flex-col items-center justify-center gap-2">
+        <div>
+          <div className="flex flex-row items-center justify-center gap-2 text-sm font-semibold text-muted-foreground">
+            <PiPaperPlaneThin className="h-6 w-6" />
+            <span>seenaa</span>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} seenaa. All rights reserved.
+          </div>
+        </div>
+        <LogoutButton />
+      </SidebarFooter>
     </Sidebar>
   );
 }
