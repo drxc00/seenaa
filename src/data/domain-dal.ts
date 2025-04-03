@@ -17,3 +17,20 @@ export async function hasSubDomainSet(userId: string) {
     .where(eq(userBlogDomain.userId, userId));
   return userSubDomain.length > 0;
 }
+
+export async function isSubDomainValid(domain: string) {
+  const userSubDomain = await db
+    .select()
+    .from(userBlogDomain)
+    .where(eq(userBlogDomain.domain, domain));
+
+  return userSubDomain.length > 0;
+}
+
+export async function getUserBlogDomain(userId: string) {
+  const userSubDomain = await db
+    .select()
+    .from(userBlogDomain)
+    .where(eq(userBlogDomain.userId, userId));
+  return userSubDomain[0]?.domain;
+}

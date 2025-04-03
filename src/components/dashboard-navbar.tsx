@@ -1,10 +1,19 @@
+"use client";
+
 import { PiPaperPlaneThin } from "react-icons/pi";
 import { SignOutButton } from "./signout-button";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 export function DashboardNavbar() {
+  const {
+    data: session,
+    isPending, //loading state
+  } = authClient.useSession();
+  const blogDomain = session?.user?.blogDomain;
+
   return (
     <Card className="p-0 rounded-lg">
       <CardContent className="p-2 flex items-center justify-between">
@@ -15,7 +24,15 @@ export function DashboardNavbar() {
           </div>
         </Link>
         <div className="flex gap-2">
-          <Button>View Blog</Button>
+          <Link
+            href={
+              process.env.NODE_ENV === "production"
+                ? `https://${blogDomain}.${process.env.NEXT_ORIGIN_DOMAIN}`
+                : `http://${blogDomain}.localhost:3000`
+            }
+          >
+            <Button disabled={isPending}>View Blog</Button>
+          </Link>
           <SignOutButton />
         </div>
       </CardContent>
