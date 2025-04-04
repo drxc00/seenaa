@@ -12,7 +12,7 @@ export function DashboardNavbar() {
     data: session,
     isPending, //loading state
   } = authClient.useSession();
-  const blogDomain = session?.user?.blogDomain;
+  const blogDomain = session?.user?.username;
 
   return (
     <Card className="p-0 rounded-lg">

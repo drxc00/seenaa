@@ -1,23 +1,8 @@
 import "server-only";
 import { db } from "@/db/drizzle";
 import { eq, and } from "drizzle-orm";
-import { post, userBlogDomain } from "@/db/schema";
+import { post } from "@/db/schema";
 import { user } from "@/db/auth-schema";
-
-export async function hasSubDomainSet(userId: string) {
-  /**
-   * Checks if the user have a subdomain set.
-   * This is used for their respective subdomains.
-   * For example: drxco.seenaa.xyz
-   * "drxco" is the custom subdomain set for the user.
-   */
-
-  const userSubDomain = await db
-    .select()
-    .from(userBlogDomain)
-    .where(eq(userBlogDomain.userId, userId));
-  return userSubDomain.length > 0;
-}
 
 export async function isSubDomainValid(domain: string) {
   /**
@@ -26,23 +11,10 @@ export async function isSubDomainValid(domain: string) {
    */
   const userSubDomain = await db
     .select()
-    .from(userBlogDomain)
-    .where(eq(userBlogDomain.domain, domain));
+    .from(user)
+    .where(eq(user.username, domain));
 
   return userSubDomain.length > 0;
-}
-
-export async function getUserBlogDomain(userId: string) {
-  /**
-   * Fetches the subdomain/blog name associated with the user.
-   * For example: drxco.seenaa.xyz we want to know if the user is "drxco"
-   * This is used to fetch the blog data for the user.
-   */
-  const userSubDomain = await db
-    .select()
-    .from(userBlogDomain)
-    .where(eq(userBlogDomain.userId, userId));
-  return userSubDomain[0]?.domain;
 }
 
 export async function getBlogData(domain: string) {
@@ -52,22 +24,18 @@ export async function getBlogData(domain: string) {
    */
 
   /** Get the user id first */
-  const userId = await db
-    .select({ userId: userBlogDomain.userId })
-    .from(userBlogDomain)
-    .where(eq(userBlogDomain.domain, domain))
-    .then((res) => res[0]?.userId);
+  const userData = await db
+    .select()
+    .from(user)
+    .where(eq(user.username, domain));
 
-  if (!userId) return null; // No user found
+  if (!userData) return null; // No user found
 
   /** Get user data and user published posts */
-  const userDataPromise = db.select().from(user).where(eq(user.id, userId));
-  const postsPromise = db
+  const posts = await db
     .select()
     .from(post)
-    .where(and(eq(post.userId, userId), eq(post.published, true)));
-
-  const [userData, posts] = await Promise.all([userDataPromise, postsPromise]);
+    .where(and(eq(post.userId, userData[0].id), eq(post.published, true)));
 
   // Returns the user data and posts
   return { user: userData[0], posts };

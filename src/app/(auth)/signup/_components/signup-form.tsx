@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,6 +27,7 @@ export function SignupForm() {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
+      username: "",
       email: "",
       password: "",
       passwordConfirmation: "",
@@ -43,6 +45,7 @@ export function SignupForm() {
           email: data.email,
           password: data.password,
           name: data.name,
+          username: data.username,
           image: "",
           /** Automatically redirect to main after signUp */
           callbackURL: "/home",
@@ -88,6 +91,27 @@ export function SignupForm() {
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Username <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="@jdoe" {...field} />
+              </FormControl>
+              <FormMessage />
+              <FormDescription>
+                Your username will be used to create your blog. For example:{" "}
+                <code>
+                  {!field.value ? "username" : field.value}.seenaa.xyz
+                </code>
+              </FormDescription>
             </FormItem>
           )}
         />

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { getAuthData } from "@/data/auth-data";
 import { SignOutButton } from "@/components/signout-button";
 import Link from "next/link";
+import { PiGithubLogo } from "react-icons/pi";
 
 export default async function Home() {
   const authData = await getAuthData();
@@ -44,6 +45,12 @@ export default async function Home() {
               </Link>
             </>
           )}
+          <Link href="https://github.com/drxc00/seenaa" target="_blank">
+            <Button size="lg" variant="link" className="w-full">
+              <PiGithubLogo className="h-4 w-4" />
+              Check out the code
+            </Button>
+          </Link>
         </div>
       </section>
     </main>

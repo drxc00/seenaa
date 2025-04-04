@@ -24,17 +24,16 @@ export function SignInForm() {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
 
   const handleSubmit = async (data: z.infer<typeof signInSchema>) => {
     try {
-      await authClient.signIn.email({
-        email: data.email,
+      await authClient.signIn.username({
+        username: data.username,
         password: data.password,
-        callbackURL: "/home",
         fetchOptions: {
           onRequest: () => {
             setIsLoading(true);
@@ -44,7 +43,7 @@ export function SignInForm() {
           },
           onError: (ctx) => {
             setIsLoading(false);
-            form.setError("email", {
+            form.setError("username", {
               type: "custom",
               message: ctx.error.message,
             });
@@ -66,12 +65,12 @@ export function SignInForm() {
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="me@seenaa.com" {...field} />
+                <Input placeholder="@jdoe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
