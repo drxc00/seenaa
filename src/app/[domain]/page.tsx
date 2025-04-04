@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getBlogData, isSubDomainValid } from "@/data/domain-dal";
-import { ArrowRight, Calendar, Send } from "lucide-react";
+import { ArrowRight, Calendar, PersonStanding, Send } from "lucide-react";
 import Link from "next/link";
 
 type BlogData = Awaited<ReturnType<typeof getBlogData>>;
@@ -17,11 +17,11 @@ export default async function BlogPage({ params }: BlogPageProps) {
     throw new Error("Invalid Seenaa Blog");
   }
 
-  const blogData: BlogData = await getBlogData(domain);
+  const blogData: BlogData = await getBlogData(domain, 6);
 
   return (
-    <main className="w-full max-w-5xl mx-auto py-10 px-4 sm:px-6">
-      <Card className="w-full p-0 shadow-none border-dashed">
+    <main className="w-full max-w-4xl mx-auto py-10 px-4 sm:px-6">
+      <Card className="w-full p-0 shadow-none">
         <CardContent className="p-4">
           <div className="flex flex-col items-center space-y-4">
             <Avatar className="w-14 h-14 border-1 border-primary/10">
@@ -46,12 +46,29 @@ export default async function BlogPage({ params }: BlogPageProps) {
           </div>
         </CardContent>
       </Card>
+      <section className="mt-8">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1">
+            <PersonStanding className="w-5 h-5" />
+            <h2 className="text-lg font-semibold tracking-tight">about me</h2>
+          </div>
+          {blogData?.user?.bio && (
+            <p className="text-muted-foreground">{blogData?.user?.bio}</p>
+          )}
+
+          {!blogData?.user?.bio && (
+            <p className="text-muted-foreground">
+              there&apos;s nothing here...
+            </p>
+          )}
+        </div>
+      </section>
 
       <section className="mb-8 mt-16">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Send className="w-6 h-6" />
-            <h2 className="text-2xl font-semibold tracking-tight">
+            <Send className="w-4 h-4" />
+            <h2 className="text-lg font-semibold tracking-tight">
               recent posts
             </h2>
           </div>
@@ -62,7 +79,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6">
           {blogData?.posts.map((post) => (
             <Card
               key={post?.id}
@@ -72,23 +89,23 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 <h3 className="text-lg font-semibold line-clamp-2 leading-tight">
                   {post?.title}
                 </h3>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <time dateTime={post?.createdAt.toISOString()}>
+                    {post?.createdAt.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </time>
+                </div>
+                <p className="text-sm text-muted-foreground">{post?.excerpt}</p>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-3.5 w-3.5" />
-                    <time dateTime={post?.createdAt.toISOString()}>
-                      {post?.createdAt.toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </time>
-                  </div>
-
                   <Link href={`/${post?.slug}`}>
-                    <Button variant="ghost" size="sm" className="font-medium">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80">
                       <span>Read post</span>
                       <ArrowRight className="h-4 w-4" />
-                    </Button>
+                    </div>
                   </Link>
                 </div>
               </CardContent>

@@ -60,12 +60,13 @@ export function Editor({ post }: EditorProps) {
   const { executeAsync: invokeTextGeneration } = useAction(aiTextCompletion);
 
   const handleSave = useCallback(
-    async (content: string) => {
+    async (content: string, textContent: string) => {
       /** Save the content to the server */
       try {
         const result = await invokeSaveAction({
           postId: post?.postId as string,
           postContent: content,
+          postContentTextOnly: textContent,
         });
 
         if (result?.data?.success) {

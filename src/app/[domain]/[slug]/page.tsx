@@ -15,7 +15,7 @@ export default async function PostPage({
   const content = postData[0]?.postContent || "";
 
   return (
-    <main className="min-h-screen flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen flex justify-center items-start py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-3xl">
         {/* Back Button */}
         <Link href="/">
@@ -32,7 +32,12 @@ export default async function PostPage({
               {title}
             </h1>
             <div className="flex items-center gap-2 text-muted-foreground">
-              <p>{postData[0]?.user?.name}</p>
+              <p className="font-medium flex items-center gap-1">
+                {postData[0]?.user?.name}{" "}
+                <span className="text-muted-foreground/80">
+                  (@{postData[0]?.user?.username})
+                </span>
+              </p>
               <span>|</span>
               <p>{postData[0]?.postCreatedAt.toDateString()}</p>
             </div>

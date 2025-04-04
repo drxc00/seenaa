@@ -2,7 +2,7 @@ import { PiPaperPlaneThin } from "react-icons/pi";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="bg-muted flex flex-col min-h-screen justify-between">
+    <main className=" flex flex-col min-h-screen justify-between">
       {children}
       <div className="flex flex-col justify-center items-center py-4">
         <div className="flex flex-row items-center justify-center gap-2 text-sm font-semibold text-muted-foreground">

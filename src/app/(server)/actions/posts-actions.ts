@@ -36,42 +36,54 @@ export const savePostContent = withAuthActions
     z.object({
       postId: z.string(),
       postContent: z.string(),
+      postContentTextOnly: z.string().optional(),
     })
   )
-  .action(async ({ parsedInput: { postId, postContent } }) => {
-    try {
-      /** Extract the title and content
-       *  The title is h1 tag with the id="post-title"
-       */
+  .action(
+    async ({ parsedInput: { postId, postContent, postContentTextOnly } }) => {
+      try {
+        /** Extract the title and content
+         *  The title is h1 tag with the id="post-title"
+         */
 
-      const pattern = /<h1[^>]*data-type=["']title["'][^>]*>(.*?)<\/h1>/;
-      // Extract title using regex
-      const titleMatch = postContent.match(pattern);
-      const title = titleMatch ? titleMatch[1].trim() : "Untitled";
+        const pattern = /<h1[^>]*data-type=["']title["'][^>]*>(.*?)<\/h1>/;
+        // Extract title using regex
+        const titleMatch = postContent.match(pattern);
+        const title = titleMatch ? titleMatch[1].trim() : "Untitled";
 
-      // Remove the title from content
-      const contentWithoutTitle = postContent.replace(pattern, "").trim();
+        // Remove the title from content
+        const contentWithoutTitle = postContent.replace(pattern, "").trim();
 
-      await db
-        .update(post)
-        .set({
-          title: title,
-          content: contentWithoutTitle,
-          slug: generateSlug(title),
-          updatedAt: new Date(),
-        })
-        .where(eq(post.id, postId));
+        // Create an excerpt from the content
+        const excerpt = postContentTextOnly?.replace(title, "").trim() || "";
+        const excerptLimit = 200; // Set the desired excerpt length limit
+        const excerptText =
+          excerpt.length > excerptLimit
+            ? `${excerpt.slice(0, excerptLimit)}...`
+            : excerpt;
 
-      return {
-        success: true,
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: (error as Error).message,
-      };
+        await db
+          .update(post)
+          .set({
+            title: title,
+            content: contentWithoutTitle,
+            excerpt: excerptText,
+            slug: generateSlug(title),
+            updatedAt: new Date(),
+          })
+          .where(eq(post.id, postId));
+
+        return {
+          success: true,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: (error as Error).message,
+        };
+      }
     }
-  });
+  );
 
 export const publishPost = withAuthActions
   .schema(

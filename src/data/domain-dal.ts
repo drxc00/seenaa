@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "@/db/drizzle";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { post } from "@/db/schema";
 import { user } from "@/db/auth-schema";
 
@@ -17,10 +17,11 @@ export async function isSubDomainValid(domain: string) {
   return userSubDomain.length > 0;
 }
 
-export async function getBlogData(domain: string) {
+export async function getBlogData(domain: string, limit?: number) {
   /**
    * Fetches the blog data from the database
    * This includes the user and their posts
+   * Returns the
    */
 
   /** Get the user id first */
@@ -32,10 +33,16 @@ export async function getBlogData(domain: string) {
   if (!userData) return null; // No user found
 
   /** Get user data and user published posts */
-  const posts = await db
+  // Base query for posts
+  // Base query builder
+  const postQuery = db
     .select()
     .from(post)
-    .where(and(eq(post.userId, userData[0].id), eq(post.published, true)));
+    .where(and(eq(post.userId, userData[0].id), eq(post.published, true)))
+    .orderBy(desc(post.createdAt));
+
+  // Add limit if defined
+  const posts = limit ? await postQuery.limit(limit) : await postQuery;
 
   // Returns the user data and posts
   return { user: userData[0], posts };

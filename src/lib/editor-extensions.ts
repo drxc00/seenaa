@@ -29,8 +29,9 @@ export const SaveShortcut = Node.create({
           },
           { once: true }
         );
-        const content = this.editor.getHTML();
-        this.options.onSave(content);
+        const contentHTML = this.editor.getHTML();
+        const contentText = this.editor.getText();
+        this.options.onSave(contentHTML, contentText);
         return true;
       },
     };
