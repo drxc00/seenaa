@@ -107,7 +107,7 @@ export function Editor({ post }: EditorProps) {
                 </Button>
               </NextLink>
               <EditorToolbar editor={editor} />
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <Button variant="destructive">
                   <Trash2 className="h-4 w-4" />
                   <span>Delete</span>

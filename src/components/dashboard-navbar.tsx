@@ -31,7 +31,9 @@ export function DashboardNavbar() {
                 : `http://${blogDomain}.localhost:3000`
             }
           >
-            <Button disabled={isPending}>View Blog</Button>
+            <Button disabled={isPending} size="lg">
+              View Blog
+            </Button>
           </Link>
           <SignOutButton />
         </div>
