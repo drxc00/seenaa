@@ -10,7 +10,7 @@ const raleway = Raleway({
 
 export const metadata: Metadata = {
   title: "seenaa",
-  description: "Tell your story, inspire others, and leave a lasting legacy.",
+  description: "When you're bored and want to write something.",
 };
 
 export default function RootLayout({
@@ -20,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/seenaa_logo.png" sizes="any" />
+      </head>
       <body className={`${raleway.className} antialiased`}>
         {children}
         <Toaster />
