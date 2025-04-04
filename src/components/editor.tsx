@@ -6,7 +6,7 @@ import Image from "@tiptap/extension-image";
 import { EditorToolbar } from "./editor-toolbar";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AIAutoComplete,
   SaveShortcut,
@@ -50,9 +50,6 @@ interface EditorProps {
 }
 
 export function Editor({ post }: EditorProps) {
-  const [content, setContent] = useState<string>(
-    post?.postContent || "<p></p>"
-  );
   const [completionModel, setCompletionModel] = useState<string>(
     MODELS.GEMINI.id // gemini-2.0-flash-lite-001 default
   );
@@ -62,85 +59,90 @@ export function Editor({ post }: EditorProps) {
 
   const { executeAsync: invokeTextGeneration } = useAction(aiTextCompletion);
 
-  const handleSave = async (content: string) => {
-    /** Save the content to the server */
-    try {
-      const result = await invokeSaveAction({
-        postId: post?.postId as string,
-        postContent: content,
-      });
+  const handleSave = useCallback(
+    async (content: string) => {
+      /** Save the content to the server */
+      try {
+        const result = await invokeSaveAction({
+          postId: post?.postId as string,
+          postContent: content,
+        });
 
-      if (result?.data?.success) {
-        toast.success("Content saved successfully");
-      } else {
-        toast.error(result?.data?.message || "Failed to save content");
+        if (result?.data?.success) {
+          toast.success("Content saved successfully");
+        } else {
+          toast.error(result?.data?.message || "Failed to save content");
+        }
+      } catch (error) {
+        toast.error("An error occurred while saving");
+        console.error(error);
       }
-    } catch (error) {
-      toast.error("An error occurred while saving");
-      console.error(error);
-    }
-  };
-
-  const completionFunc = async (
-    content: string,
-    model: string
-  ): Promise<string | null> => {
-    /** Invokes the TextGeneration Server action */
-    const response = await invokeTextGeneration({
-      context: content as string,
-      model: model as string,
-    });
-    if (!response?.data?.success) {
-      toast.error(response?.data?.message);
-      return null;
-    }
-    return response?.data.generatedText || "";
-  };
-
-  const editor = useEditor({
-    extensions: [
-      TitleNode.configure({ title: post?.postTitle ?? "Untitled" }),
-      SaveShortcut.configure({ onSave: handleSave }),
-      AIAutoComplete.configure({
-        completionFunc: completionFunc,
-        model: completionModel,
-      }),
-      Placeholder.configure({
-        placeholder: ({ node }) => {
-          if (node.type.name === "paragraph") {
-            return "Write something ...";
-          }
-          return "";
-        },
-        emptyEditorClass:
-          "cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-2 before:left-2 before:text-mauve-11 before:opacity-50 before-pointer-events-none",
-      }),
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: "text-primary underline underline-offset-2",
-        },
-      }),
-      Image.configure({
-        HTMLAttributes: {
-          class: "rounded-md max-w-full mx-auto my-4",
-        },
-      }),
-      CharacterCount,
-    ],
-    content: `<h1 data-type="title">${post?.postTitle ?? "Untitled"}</h1>${content}`,
-    onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
     },
-    editorProps: {
-      attributes: {
-        class:
-          "prose prose-zinc prose-sm sm:prose-base lg:prose-lg xl:prose-xl focus:outline-none",
+    [invokeSaveAction, post?.postId]
+  );
+
+  const completionFunc = useCallback(
+    async (content: string, model: string): Promise<string | null> => {
+      /** Invokes the TextGeneration Server action */
+      const response = await invokeTextGeneration({
+        context: content as string,
+        model: model as string,
+      });
+      if (!response?.data?.success) {
+        toast.error(response?.data?.message);
+        return null;
+      }
+      return response?.data.generatedText || "";
+    },
+    [invokeTextGeneration]
+  );
+
+  const editorConfig = useMemo(
+    () => ({
+      extensions: [
+        TitleNode.configure({ title: post?.postTitle ?? "Untitled" }),
+        SaveShortcut.configure({ onSave: handleSave }),
+        AIAutoComplete.configure({
+          completionFunc: completionFunc,
+          model: completionModel,
+        }),
+        Placeholder.configure({
+          placeholder: ({ node }) => {
+            if (node.type.name === "paragraph") {
+              return "Write something ...";
+            }
+            return "";
+          },
+          emptyEditorClass:
+            "cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-2 before:left-2 before:text-mauve-11 before:opacity-50 before-pointer-events-none",
+        }),
+        StarterKit,
+        Link.configure({
+          openOnClick: false,
+          HTMLAttributes: {
+            class: "text-primary underline underline-offset-2",
+          },
+        }),
+        Image.configure({
+          HTMLAttributes: {
+            class: "rounded-md max-w-full mx-auto my-4",
+          },
+        }),
+        CharacterCount,
+      ],
+      content: `<h1 data-type="title">${post?.postTitle ?? "Untitled"}</h1>${post?.postContent ?? "<p></p>"}`,
+      editorProps: {
+        attributes: {
+          class:
+            "prose prose-zinc prose-sm sm:prose-base lg:prose-lg xl:prose-xl focus:outline-none",
+        },
       },
-    },
-    immediatelyRender: false,
-  });
+      immediatelyRender: false,
+    }),
+    [post, completionModel, completionFunc, handleSave]
+  );
+
+  const editor = useEditor(editorConfig);
 
   useEffect(() => {
     /**
