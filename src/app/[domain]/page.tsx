@@ -10,6 +10,14 @@ type BlogPageProps = {
   params: Promise<{ domain: string }>;
 };
 
+export async function generateMetadata({ params }: BlogPageProps) {
+  const { domain } = await params;
+  return {
+    title: `${domain} | seenaa`,
+    description: `Blog of ${domain}`,
+  };
+}
+
 export default async function BlogPage({ params }: BlogPageProps) {
   const { domain } = await params;
 
@@ -38,11 +46,6 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 @{blogData?.user.username}
               </p>
             </div>
-            {blogData?.user.bio && (
-              <p className="text-muted-foreground text-center max-w-md">
-                {blogData.user.bio}
-              </p>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -101,7 +104,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                 </div>
                 <p className="text-sm text-muted-foreground">{post?.excerpt}</p>
                 <div className="flex items-center justify-between">
-                  <Link href={`/${post?.slug}`}>
+                  <Link href={`/blog/${post?.slug}`}>
                     <div className="flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80">
                       <span>Read post</span>
                       <ArrowRight className="h-4 w-4" />

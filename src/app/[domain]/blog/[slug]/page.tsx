@@ -54,7 +54,7 @@ export default async function PostPage({
               <Link
                 href={
                   process.env.NODE_ENV === "production"
-                    ? (process.env.NEXT_ORIGIN_DOMAIN as string)
+                    ? (process.env.NEXT_PUBLIC_ORIGIN_DOMAIN as string)
                     : "http://localhost:3000"
                 }
                 className="font-semibold"

@@ -17,3 +17,13 @@ export const signInSchema = z.object({
   username: z.string().min(1),
   password: z.string().min(8),
 });
+
+export const profileSchema = z.object({
+  userId: z.string(),
+  name: z.string().min(1).optional(),
+  username: z.string().min(1).optional(),
+  bio: z.string().max(160).optional(),
+  image: z.string().optional(),
+  email: z.string().email().optional(),
+  password: z.string().optional(),
+});

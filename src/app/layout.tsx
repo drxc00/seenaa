@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 const raleway = Raleway({
   variable: "--font-raleway",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {

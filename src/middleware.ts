@@ -14,7 +14,7 @@ export default async function middleware(req: NextRequest) {
   let blogDomain;
   if (process.env.NODE_ENV === "production") {
     // In production, use the custom base domain from environment variables
-    const originaDomain = process.env.NEXT_ORIGIN_DOMAIN;
+    const originaDomain = process.env.NEXT_PUBLIC_ORIGIN_DOMAIN;
     blogDomain = hostname?.replace(`.${originaDomain}`, "");
   } else {
     // Ensure we extract subdomains properly in development mode

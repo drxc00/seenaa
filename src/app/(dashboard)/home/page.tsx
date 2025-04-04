@@ -2,16 +2,16 @@ import { CreateNewPostButton } from "@/components/create-new-post-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { getAuthData } from "@/data/auth-data";
 import { getUserPosts } from "@/data/post-dal";
-import { auth } from "@/lib/auth";
 import { ArrowRight } from "lucide-react";
-import { headers } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function dashboard() {
-  const authData = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const authData = await getAuthData();
+
+  if (!authData?.session) redirect("/signin");
 
   const posts = await getUserPosts(authData?.user?.id as string);
 
