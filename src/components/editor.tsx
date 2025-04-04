@@ -7,9 +7,16 @@ import { EditorToolbar } from "./editor-toolbar";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useState } from "react";
-import { SaveShortcut, TitleNode } from "@/lib/editor-extensions";
+import {
+  AIAutoComplete,
+  SaveShortcut,
+  TitleNode,
+} from "@/lib/editor-extensions";
 import { useAction } from "next-safe-action/hooks";
-import { savePostContent } from "@/app/(server)/actions/posts-actions";
+import {
+  aiTextCompletion,
+  savePostContent,
+} from "@/app/(server)/actions/posts-actions";
 import { toast } from "sonner";
 import { ChevronLeft, Loader2, Trash2 } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
@@ -34,7 +41,10 @@ export function Editor({ post }: EditorProps) {
   const { executeAsync: invokeSaveAction, isPending: isSavingContent } =
     useAction(savePostContent);
 
+  const { executeAsync: invokeTextGeneration } = useAction(aiTextCompletion);
+
   const handleSave = async (content: string) => {
+    /** Save the content to the server */
     try {
       const result = await invokeSaveAction({
         postId: post?.postId as string,
@@ -52,10 +62,25 @@ export function Editor({ post }: EditorProps) {
     }
   };
 
+  const completionFunc = async (content: string): Promise<string | null> => {
+    /** Invokes the TextGeneration Server action */
+    const response = await invokeTextGeneration({
+      context: content as string,
+    });
+    if (!response?.data?.success) {
+      toast.error(response?.data?.message);
+      return null;
+    }
+    return response?.data.generatedText || "";
+  };
+
   const editor = useEditor({
     extensions: [
       TitleNode.configure({ title: post?.postTitle ?? "Untitled" }),
       SaveShortcut.configure({ onSave: handleSave }),
+      AIAutoComplete.configure({
+        completionFunc: completionFunc,
+      }),
       Placeholder.configure({
         placeholder: ({ node }) => {
           if (node.type.name === "paragraph") {
@@ -143,7 +168,7 @@ export function Editor({ post }: EditorProps) {
             <div className="p-8 min-h-[calc(100vh-12rem)]">
               <EditorContent
                 editor={editor}
-                className="min-h-[calc(100vh-14rem)]"
+                className="min-h-[calc(100vh-14rem)] ["
               />
             </div>
           </div>

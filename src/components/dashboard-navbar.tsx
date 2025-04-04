@@ -30,6 +30,7 @@ export function DashboardNavbar() {
                 ? `https://${blogDomain}.${process.env.NEXT_ORIGIN_DOMAIN}`
                 : `http://${blogDomain}.localhost:3000`
             }
+            target="_blank"
           >
             <Button disabled={isPending} size="lg">
               View Blog
