@@ -18,7 +18,14 @@ import {
   savePostContent,
 } from "@/app/(server)/actions/posts-actions";
 import { toast } from "sonner";
-import { ChevronLeft, Loader2, Trash2 } from "lucide-react";
+import {
+  ChevronLeft,
+  CircleAlert,
+  Command,
+  Loader2,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import NextLink from "next/link";
@@ -31,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 
 interface EditorProps {
   post?: {
@@ -158,7 +166,21 @@ export function Editor({ post }: EditorProps) {
                 </Button>
               </NextLink>
               <EditorToolbar editor={editor} />
-              <div>
+              <div className="flex items-center gap-4">
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="flex items-center gap-1 text-muted-foreground text-sm hover:text-foreground cursor-pointer">
+                      <CircleAlert className="h-4 w-4 text-muted-forground" />
+                      <p className="underline">Completion Model</p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="flex items-center gap-2 text-base">
+                    <Command className="w-4 h-4" /> <span>or</span>{" "}
+                    <span>Ctr</span>
+                    <Plus className="w-4 h-4" /> <span>Space</span>
+                    <span>to trigger auto completion</span>
+                  </TooltipContent>
+                </Tooltip>
                 <Select
                   defaultValue={completionModel}
                   onValueChange={(value) => {
@@ -217,7 +239,7 @@ export function Editor({ post }: EditorProps) {
             <div className="p-8 min-h-[calc(100vh-12rem)]">
               <EditorContent
                 editor={editor}
-                className="min-h-[calc(100vh-14rem)] ["
+                className="min-h-[calc(100vh-14rem)]"
               />
             </div>
           </div>

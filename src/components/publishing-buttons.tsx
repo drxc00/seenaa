@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, PenBox, RemoveFormattingIcon } from "lucide-react";
+import { Loader2, PenBox, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAction } from "next-safe-action/hooks";
 import {
@@ -29,7 +29,7 @@ export function PublishButton({ postId }: { postId: string }) {
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : (
         <>
-          <PenBox className="h-4 w-4" />
+          <Send className="h-4 w-4" />
           <span>Publish</span>
         </>
       )}
@@ -56,7 +56,7 @@ export function UnPublishButton({ postId }: { postId: string }) {
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : (
         <>
-          <RemoveFormattingIcon className="h-4 w-4" />
+          <PenBox className="h-4 w-4" />
           <span>Unpublish</span>
         </>
       )}
