@@ -3,7 +3,7 @@
 import { db } from "@/db/drizzle";
 import { post } from "@/db/schema";
 import { withAuthActions } from "@/lib/safe-actions";
-import { textCompletion } from "@/models/gemini";
+import { textCompletion } from "@/models/completion";
 import { generateSlug } from "@/utils/post-utils";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
@@ -129,11 +129,12 @@ export const aiTextCompletion = withAuthActions
   .schema(
     z.object({
       context: z.string(),
+      model: z.string(),
     })
   )
-  .action(async ({ parsedInput: { context } }) => {
+  .action(async ({ parsedInput: { context, model } }) => {
     try {
-      const generatedText = await textCompletion({ context });
+      const generatedText = await textCompletion({ context, model });
       return {
         success: true,
         generatedText: generatedText,

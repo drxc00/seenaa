@@ -6,7 +6,7 @@ import Image from "@tiptap/extension-image";
 import { EditorToolbar } from "./editor-toolbar";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AIAutoComplete,
   SaveShortcut,
@@ -23,6 +23,14 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import NextLink from "next/link";
 import { PublishButton, UnPublishButton } from "./publishing-buttons";
+import { MODELS } from "@/models/available-models";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface EditorProps {
   post?: {
@@ -36,6 +44,9 @@ interface EditorProps {
 export function Editor({ post }: EditorProps) {
   const [content, setContent] = useState<string>(
     post?.postContent || "<p></p>"
+  );
+  const [completionModel, setCompletionModel] = useState<string>(
+    MODELS.GEMINI.id // gemini-2.0-flash-lite-001 default
   );
 
   const { executeAsync: invokeSaveAction, isPending: isSavingContent } =
@@ -62,10 +73,14 @@ export function Editor({ post }: EditorProps) {
     }
   };
 
-  const completionFunc = async (content: string): Promise<string | null> => {
+  const completionFunc = async (
+    content: string,
+    model: string
+  ): Promise<string | null> => {
     /** Invokes the TextGeneration Server action */
     const response = await invokeTextGeneration({
       context: content as string,
+      model: model as string,
     });
     if (!response?.data?.success) {
       toast.error(response?.data?.message);
@@ -80,6 +95,7 @@ export function Editor({ post }: EditorProps) {
       SaveShortcut.configure({ onSave: handleSave }),
       AIAutoComplete.configure({
         completionFunc: completionFunc,
+        model: completionModel,
       }),
       Placeholder.configure({
         placeholder: ({ node }) => {
@@ -118,6 +134,16 @@ export function Editor({ post }: EditorProps) {
     immediatelyRender: false,
   });
 
+  useEffect(() => {
+    /**
+     * This effect will run when the completionModel changes.
+     * It will update the model used for AI auto-completion.
+     */
+    if (editor) {
+      editor.commands.updateCompletionModel(completionModel);
+    }
+  }, [completionModel, editor]);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Floating Toolbar */}
@@ -132,6 +158,29 @@ export function Editor({ post }: EditorProps) {
                 </Button>
               </NextLink>
               <EditorToolbar editor={editor} />
+              <div>
+                <Select
+                  defaultValue={completionModel}
+                  onValueChange={(value) => {
+                    setCompletionModel(value);
+                  }}
+                >
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Select a model" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60 overflow-auto">
+                    {Object.keys(MODELS).map((model) => {
+                      const modelData = MODELS[model as keyof typeof MODELS];
+                      return (
+                        <SelectItem key={modelData.id} value={modelData.id}>
+                          <modelData.icon />
+                          {modelData.name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="flex items-center gap-2">
                 <Button variant="destructive">
                   <Trash2 className="h-4 w-4" />

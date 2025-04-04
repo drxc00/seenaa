@@ -139,6 +139,7 @@ export const AIAutoComplete = Node.create<
      */
     return {
       completionFunc: () => Promise.resolve(""),
+      model: "",
       HTMLAttributes: {
         class: "bg-primary/10 text-muted-foreground italic rounded px-0.5",
       },
@@ -147,6 +148,10 @@ export const AIAutoComplete = Node.create<
 
   addCommands() {
     return {
+      updateCompletionModel: (newModel: string) => () => {
+        this.options.model = newModel;
+        return true;
+      },
       acceptSuggestion:
         () =>
         ({
@@ -247,7 +252,7 @@ export const AIAutoComplete = Node.create<
          * The `then` method takes a callback function that is called when the promise is resolved.
          */
         this.options
-          .completionFunc(content)
+          .completionFunc(content, this.options.model)
           .then((completionText: string | null) => {
             // Remove the loading indicator
             this.editor.commands.deleteRange({

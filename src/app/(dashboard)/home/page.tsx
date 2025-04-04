@@ -1,9 +1,10 @@
 import { CreateNewPostButton } from "@/components/create-new-post-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { getUserPosts } from "@/data/post-dal";
 import { auth } from "@/lib/auth";
+import { ArrowRight } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -22,26 +23,26 @@ export default async function dashboard() {
       <div className="grid grid-cols-4 gap-2">
         <CreateNewPostButton />
         {posts.map((post) => (
-          <Card key={post.id} className="p-0">
-            <CardContent className="p-4 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h1 className="font-semibold text-lg">{post.title}</h1>
-                <Badge>{post.published ? "Published" : "Draft"}</Badge>
+          <Card key={post.id} className="overflow-hidden p-0">
+            <div className="flex justify-between items-start px-4 pt-4">
+              <CardTitle className="text-lg font-semibold p-0">
+                {post.title}
+              </CardTitle>
+              <Badge variant={post.published ? "default" : "secondary"}>
+                {post.published ? "Published" : "Draft"}
+              </Badge>
+            </div>
+            <CardContent className="px-4 pb-4 flex flex-col gap-4">
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>Created: {post.createdAt.toDateString()}</p>
+                <p>Updated: {post.updatedAt.toDateString()}</p>
               </div>
-              <div className="flex flex-col gap-1 text-sm">
-                <p className="text-muted-foreground">
-                  Created at: {post.createdAt.toDateString()}
-                </p>
-                <p className="text-muted-foreground">
-                  Updated at: {post.updatedAt.toDateString()}
-                </p>
-              </div>
-              <div className="flex items-center gap-2 w-full">
-                <Button variant="outline">View</Button>
-                <Link href={`/post/${post.id}`}>
-                  <Button>Edit</Button>
-                </Link>
-              </div>
+              <Link href={`/post/${post.id}`} className="w-full">
+                <Button variant="outline" className="w-full justify-between">
+                  <span>Open Post</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         ))}

@@ -5,7 +5,8 @@ export interface HTMLAttributes {
 }
 
 export interface AIAutoCompleteOptions {
-  completionFunc: (content: string) => Promise<string | null>;
+  completionFunc: (content: string, model: string) => Promise<string | null>;
+  model: string;
   HTMLAttributes?: HTMLAttributes;
 }
 
@@ -24,6 +25,10 @@ declare module "@tiptap/core" {
        * Remove the current AI suggestion
        */
       removeSuggestion: () => ReturnType;
+      /**
+       * update model for AI completion
+       */
+      updateCompletionModel: (model: string) => ReturnType;
     };
   }
 }
