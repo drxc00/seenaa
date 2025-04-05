@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:migrate": "drizzle-kit generate:pg && drizzle-kit push:pg",
+    "db:migrate": "drizzle-kit generate && drizzle-kit push",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
