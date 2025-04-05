@@ -26,7 +26,7 @@ export default async function middleware(req: NextRequest) {
   console.log("Blog Domain:", blogDomain);
 
   // If no subdomain, continue normally
-  if (!blogDomain || blogDomain === "localhost:3000") {
+  if (!blogDomain || blogDomain === process.env.NEXT_PUBLIC_ORIGIN_DOMAIN) {
     return NextResponse.next();
   }
 
