@@ -21,6 +21,10 @@ export default async function middleware(req: NextRequest) {
     blogDomain = hostname?.replace(`.localhost:3000`, "");
   }
 
+  // LOGS
+  console.log("Hostname:", hostname);
+  console.log("Blog Domain:", blogDomain);
+
   // If no subdomain, continue normally
   if (!blogDomain || blogDomain === "localhost:3000") {
     return NextResponse.next();
