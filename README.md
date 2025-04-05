@@ -10,7 +10,7 @@ Seenaa is an open-source writing app with a blog-like structure where users can 
 
 ## Key Features
 
-- **Personal Pages**: Users can have their own subdomains like `neil.seenaa.xyz`, providing a personalized space to publish and manage their content.
+- **Personal Pages**: Users can have their own subdomains like `drxco.seenaa.xyz`, providing a personalized space to publish and manage their content.
 - **AI Writing Assistance**: Enhance your writing experience with **auto-complete** powered by advanced AI models like **Gemini** and **DeepSeek**.
 
 - **Intuative Rich Text Editor**: Used **TipTap.js** and well, you know the rest.
@@ -23,44 +23,56 @@ Seenaa is an open-source writing app with a blog-like structure where users can 
 - **PostgreSQL**: The relational database used for storing user data and posts.
 - **ShadCN**: For UI components, providing a beautiful and responsive design.
 
-## Setup Instructions
+## Development Setup
 
-### 1. Clone the Repository
+For local development, you can use the development Docker Compose configuration which only starts a PostgreSQL database:
 
-Start by cloning the repository to your local machine.
-
+1. Make sure Docker and Docker Compose are installed
+2. Run the development database:
 ```bash
-git clone https://github.com/drxc00/seenaa.git
-cd seenaa
+docker compose -f docker-compose-dev.yaml up
 ```
-
-### 2. Docker Setup
-
-Seenaa uses Docker for local development. We provide a Docker Compose setup to get PostgreSQL up and running.
-
-1. Make sure Docker and Docker Compose are installed on your machine.
-2. Run the following command to start the local environment:
-
+3. Install dependencies and migrations:
 ```bash
-docker compose up
+npm install --legacy-peer-deps
+npm run db:migrate
 ```
-
-### 3. Installing Dependencies
-
-Install the necessary dependencies for the project:
-
-```bash
-npm install
-```
-
-### 4. Running the App
-
-Start the development server:
-
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
+## Production Deployment
+
+For a full containerized deployment (both database and web app):
+
+1. Create a `.env.prod` file with your production environment variables
+2. Run the production stack:
+```bash
+docker compose -f docker-compose.yaml up --build
+```
+
+## VPS Deployment
+
+To deploy to a VPS, you can use the `deploy.sh` script which will:
+- Create process all the variables needed.
+- Set up Docker and Docker Compose.
+- Configure Nginx with SSL using Certbot.
+- Deploy the application.
+
+1. Make the script executable:
+```bash
+chmod +x deploy.sh
+```
+2. Run the script (note: you'll need to be active during SSL certificate setup):
+```bash
+./deploy.sh
+```
+
+## Live Demo
+
+A live version is available at [https://seenaa.xyz](https://seenaa.xyz). Note that it's hosted on a budget VPS so performance may vary.
+
 ## Acknowledgments
 - Created to practice the better-auth library and Drizzle ORM.
-- Inspired by the desire to provide an easy way for people to share their thoughts when they’re bored and feel creative.
+- Inspired by the desire to provide an easy way for people to share their thoughts when they're bored and feel creative.

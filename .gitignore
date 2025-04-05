@@ -39,7 +39,6 @@ yarn-error.log*
 # deploy script
 .sh
 deploy.sh
-update.sh
 renew.sh
 
 /migrations
