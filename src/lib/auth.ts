@@ -21,5 +21,8 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  rateLimit: {
+    max: 5,
+  },
   plugins: [username(), nextCookies()],
 });

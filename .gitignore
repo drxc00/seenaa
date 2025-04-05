@@ -36,6 +36,14 @@ yarn-error.log*
 # vercel
 .vercel
 
+# deploy script
+.sh
+deploy.sh
+update.sh
+renew.sh
+
+/migrations
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
