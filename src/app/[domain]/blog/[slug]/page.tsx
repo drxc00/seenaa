@@ -3,6 +3,26 @@ import { getPostDataFromSlug } from "@/data/post-dal";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ domain: string; slug: string }>;
+}) {
+  /**
+   * Generate dynamic metadata
+   * Fetches the post data from the database
+   */
+  const { domain, slug } = await params;
+  const postData = await getPostDataFromSlug(slug);
+  const title = postData[0]?.postTitle || "Untitled";
+  const content = postData[0]?.postContent || "";
+
+  return {
+    title: `${title} | ${domain}` || "Untitled | seenaa",
+    description: content,
+  };
+}
+
 export default async function PostPage({
   params,
 }: {
@@ -15,7 +35,7 @@ export default async function PostPage({
   const content = postData[0]?.postContent || "";
 
   return (
-    <main className="min-h-screen flex justify-center items-start py-12 px-4 sm:px-6 lg:px-8">
+    <main className="flex justify-center items-start py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-3xl">
         {/* Back Button */}
         <Link href="/">
