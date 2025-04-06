@@ -237,7 +237,9 @@ export const AIAutoComplete = Node.create<
      */
     return {
       "Mod-Space": () => {
-        const content = this.editor.getText();
+        /** Select the text before the cursor so that we have the content to pass to the completion function */
+        const cursorPosition = this.editor.state.selection.from;
+        const content = this.editor.state.doc.textBetween(0, cursorPosition);
         // Show loading indicator
         this.editor.commands.insertContent({
           type: this.name,
