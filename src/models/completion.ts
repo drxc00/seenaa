@@ -16,7 +16,6 @@ export async function textCompletion({
       response = (await geminiTextCompletion({ context })) as string;
       break;
     case MODELS.DEEPSEEK.id:
-        console.log("DeepSeek model selected");
       response = (await deepseekTextCompletion({ context })) as string;
       break;
     default:
