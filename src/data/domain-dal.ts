@@ -47,3 +47,17 @@ export async function getBlogData(domain: string, limit?: number) {
   // Returns the user data and posts
   return { user: userData[0], posts };
 }
+
+export async function getAllBlogs() {
+  const allBlogs = await db
+    .select({
+      name: user.name,
+      username: user.username,
+      image: user.image,
+      bio: user.bio,
+    })
+    .from(user)
+    .orderBy(desc(user.createdAt));
+
+  return allBlogs;
+}
