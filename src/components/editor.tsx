@@ -118,6 +118,11 @@ export function Editor({ post }: EditorProps) {
     toast.success("Post deleted successfully");
   }, [invokeDeleteAction, post?.postId, router]);
 
+  /**
+   * Editor
+   * Tried Optimizing the editor with useMemo but it didn't seem to make a difference
+   * Still working on it
+   */
   const editorConfig = useMemo(
     () => ({
       extensions: [
@@ -162,7 +167,6 @@ export function Editor({ post }: EditorProps) {
     }),
     [post, completionModel, completionFunc, handleSave]
   );
-
   const editor = useEditor(editorConfig);
 
   useEffect(() => {
@@ -240,7 +244,7 @@ export function Editor({ post }: EditorProps) {
                 {post?.postPublished ? (
                   <UnPublishButton postId={post.postId} />
                 ) : (
-                  <PublishButton postId={post?.postId as string} />
+                  <PublishButton postId={post?.postId as string} editor={editor} />
                 )}
               </div>
             </CardContent>
