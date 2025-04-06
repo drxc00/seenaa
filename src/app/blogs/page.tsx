@@ -45,7 +45,7 @@ export default async function PublicBlogs() {
               }
             >
               <Card className="h-full p-0">
-                <CardContent className="py-4 px-0 text-center flex flex-col gap-4">
+                <CardContent className="py-4 px-4 text-center flex flex-col gap-4">
                   <CardHeader className="flex flex-col items-center text-center pt-2">
                     <Avatar className="h-10 w-10 md:h-14 md:w-14">
                       <AvatarImage src={blog.image || ""} alt={blog.name} />

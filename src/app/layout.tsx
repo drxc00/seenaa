@@ -25,7 +25,14 @@ export default function RootLayout({
       </head>
       <body className={`${raleway.className} antialiased`}>
         {children}
-        <Toaster />
+        <Toaster toastOptions={{
+          classNames: {
+            description: "text-foreground capitalize",
+          },
+          style: {
+            color: "var(--foreground)",
+          }
+        }} />
       </body>
     </html>
   );

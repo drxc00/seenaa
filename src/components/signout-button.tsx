@@ -22,6 +22,7 @@ export function SignOutButton() {
           onError: (ctx) => {
             toast.error("Something went wrong. Please try again.", {
               description: ctx.error.message,
+              descriptionClassName: "text-foreground"
             });
           },
         },

@@ -51,9 +51,9 @@ export function SignInForm() {
         },
       });
     } catch (error) {
-      console.error("Sign in failed", error);
       toast.error("Something went wrong. Please try again.", {
         description: (error as Error).message,
+        descriptionClassName: "text-foreground",
       });
     } finally {
       setIsLoading(false);

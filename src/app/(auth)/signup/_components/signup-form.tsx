@@ -54,6 +54,7 @@ export function SignupForm() {
           onError(ctx) {
             toast.error("Something went wrong. Please try again.", {
               description: ctx.error.message,
+              descriptionClassName: "text-foreground",
             });
             setLoading(false);
           },
@@ -69,6 +70,7 @@ export function SignupForm() {
       console.error(error);
       toast.error("Something went wrong. Please try again.", {
         description: (error as Error).message,
+        descriptionClassName: "text-foreground",
       });
     }
   };

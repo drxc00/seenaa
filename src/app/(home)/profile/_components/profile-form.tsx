@@ -47,18 +47,19 @@ export function ProfileForm({
   });
 
   const onSubmit = async (data: z.infer<typeof profileSchema>) => {
-    console.log("helo");
     /** No need to have try catch since we return the error. I think lol... */
     const response = await executeAsync(data);
     if (!response?.data?.success) {
       toast.error("Failed to update profile", {
         description: response?.data?.message || "Something went wrong",
+        descriptionClassName: "text-foreground",
       });
       return;
     }
 
     toast.success("Profile updated successfully", {
       description: response?.data?.message || "Profile updated successfully",
+      descriptionClassName: "text-foreground",
     });
     // Refresh the page to see the changes
     router.refresh();

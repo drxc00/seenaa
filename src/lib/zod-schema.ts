@@ -22,7 +22,7 @@ export const profileSchema = z.object({
   userId: z.string(),
   name: z.string().min(1).optional(),
   username: z.string().min(1).optional(),
-  bio: z.string().max(160).optional(),
+  bio: z.string().max(200).optional(),
   image: z.string().optional(),
   email: z.string().email().optional(),
   password: z.string().optional(),
