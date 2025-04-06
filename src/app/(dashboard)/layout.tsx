@@ -12,11 +12,11 @@ export default async function Layout({
 
   return (
     <>
-      <main className="w-full bg-muted min-h-screen">
-        <div className="sticky top-0 z-50 w-full py-4 px-10">
+      <main className="w-full bg-muted min-h-screen px-4 md:px-10">
+        <div className="sticky top-0 z-50 w-full py-4">
           <DashboardNavbar />
         </div>
-        <div className="px-10">{children}</div>
+        <div>{children}</div>
       </main>
     </>
   );
