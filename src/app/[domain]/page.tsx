@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getBlogData, isSubDomainValid } from "@/data/domain-dal";
 import { PostCard } from "./_components/post-card";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type BlogData = Awaited<ReturnType<typeof getBlogData>>;
 type BlogPageProps = {
@@ -22,7 +23,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
   const { domain } = await params;
 
   if (!(await isSubDomainValid(domain))) {
-    throw new Error("Invalid Seenaa Blog");
+    return notFound();
   }
 
   // Limits the posts to 6 for the home page
