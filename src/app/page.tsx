@@ -25,7 +25,7 @@ export default async function Home() {
           {authData?.session ? (
             <>
               <Link href="/home">
-                <Button size="lg" className="w-full">
+                <Button size="lg" className="w-full cursor-pointer">
                   Go to Home
                 </Button>
               </Link>
@@ -34,17 +34,30 @@ export default async function Home() {
           ) : (
             <>
               <Link href="/signin">
-                <Button size="lg" className="w-full">
+                <Button size="lg" className="w-full cursor-pointer">
                   Sign In
                 </Button>
               </Link>
               <Link href="/signup">
-                <Button size="lg" variant="outline" className="w-full">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full cursor-pointer"
+                >
                   Sign Up
                 </Button>
               </Link>
             </>
           )}
+          <Link href="/blogs">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="w-full cursor-pointer"
+            >
+              View all blogs
+            </Button>
+          </Link>
           <Link href="https://github.com/drxc00/seenaa" target="_blank">
             <Button size="lg" variant="link" className="w-full">
               <PiGithubLogo className="h-4 w-4" />
