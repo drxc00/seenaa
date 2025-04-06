@@ -244,7 +244,10 @@ export function Editor({ post }: EditorProps) {
                 {post?.postPublished ? (
                   <UnPublishButton postId={post.postId} />
                 ) : (
-                  <PublishButton postId={post?.postId as string} editor={editor} />
+                  <PublishButton
+                    postId={post?.postId as string}
+                    editor={editor}
+                  />
                 )}
               </div>
             </CardContent>
