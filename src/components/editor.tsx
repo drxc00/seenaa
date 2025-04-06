@@ -25,6 +25,7 @@ import {
   Command,
   Loader2,
   Plus,
+  SaveIcon,
   Trash2,
 } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
@@ -186,28 +187,39 @@ export function Editor({ post }: EditorProps) {
         <div className="sticky top-4 z-50 transition-all duration-300 ease-in-out transform px-4">
           <Card className="p-0 backdrop-blur-sm shadow-lg rounded-lg">
             <CardContent className="p-2 flex items-center justify-between">
-              <NextLink href="/home">
-                <Button variant="outline">
-                  <ChevronLeft className="h-4 w-4" />
-                  <span>Back</span>
+              <div className="flex items-center gap-2">
+                <NextLink href="/home">
+                  <Button variant="outline">
+                    <ChevronLeft className="h-4 w-4" />
+                    <span>Back</span>
+                  </Button>
+                </NextLink>
+                <Button
+                  onClick={async () => {
+                    /**
+                     * Save button for accessibility
+                     */
+                    const response = await invokeSaveAction({
+                      postId: post?.postId as string,
+                      postContent: editor.getHTML(),
+                      postContentTextOnly: editor.getText(),
+                    });
+
+                    if (!response?.data?.success) {
+                      toast.error(response?.data?.message);
+                      return;
+                    }
+                    toast.success("Content saved successfully");
+                  }}
+                >
+                  <SaveIcon className="h-4 w-4" />
+                  <span>Save</span>
                 </Button>
-              </NextLink>
-              <EditorToolbar editor={editor} />
-              <div className="flex items-center gap-4">
-                <Tooltip>
-                  <TooltipTrigger>
-                    <div className="flex items-center gap-1 text-muted-foreground text-sm hover:text-foreground cursor-pointer">
-                      <CircleAlert className="h-4 w-4 text-muted-forground" />
-                      <p className="underline">Completion Model</p>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="flex items-center gap-2 text-base">
-                    <Command className="w-4 h-4" /> <span>or</span>{" "}
-                    <span>Ctr</span>
-                    <Plus className="w-4 h-4" /> <span>Space</span>
-                    <span>to trigger auto completion</span>
-                  </TooltipContent>
-                </Tooltip>
+              </div>
+
+              {/* Model Selector */}
+              <div className="flex items-center gap-2">
+                <EditorToolbar editor={editor} />
                 <Select
                   defaultValue={completionModel}
                   onValueChange={(value) => {
@@ -229,7 +241,28 @@ export function Editor({ post }: EditorProps) {
                     })}
                   </SelectContent>
                 </Select>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="flex items-center gap-1 text-muted-foreground text-sm hover:text-foreground cursor-pointer">
+                      <CircleAlert className="h-4 w-4 text-muted-forground" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="flex flex-col gap-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Command className="w-4 h-4" /> <span>or</span>{" "}
+                      <span>Ctr</span>
+                      <Plus className="w-4 h-4" /> <span>Space</span>
+                      <span>to trigger auto completion</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">TAB</span> to accept
+                      suggestion or <span className="font-semibold">ESC</span>{" "}
+                      to cancel
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
               </div>
+
               <div className="flex items-center gap-2">
                 <Button variant="destructive" onClick={deletePostFunc}>
                   {isDeletingPost ? (
