@@ -15,6 +15,7 @@ import {
 import { useAction } from "next-safe-action/hooks";
 import {
   aiTextCompletion,
+  deletePost,
   savePostContent,
 } from "@/app/(server)/actions/posts-actions";
 import { toast } from "sonner";
@@ -39,6 +40,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
+import { useRouter } from "next/navigation";
 
 interface EditorProps {
   post?: {
@@ -54,9 +56,13 @@ export function Editor({ post }: EditorProps) {
     MODELS.GEMINI.id // gemini-2.0-flash-lite-001 default
   );
 
+  const router = useRouter();
+
+  /** Server actions */
   const { executeAsync: invokeSaveAction, isPending: isSavingContent } =
     useAction(savePostContent);
-
+  const { executeAsync: invokeDeleteAction, isPending: isDeletingPost } =
+    useAction(deletePost);
   const { executeAsync: invokeTextGeneration } = useAction(aiTextCompletion);
 
   const handleSave = useCallback(
@@ -97,6 +103,20 @@ export function Editor({ post }: EditorProps) {
     },
     [invokeTextGeneration]
   );
+
+  const deletePostFunc = useCallback(async () => {
+    const response = await invokeDeleteAction({
+      postId: post?.postId as string,
+    });
+
+    if (!response?.data?.success) {
+      toast.error(response?.data?.message);
+      return;
+    }
+    // Else redirect to home and show toast
+    router.replace("/home");
+    toast.success("Post deleted successfully");
+  }, [invokeDeleteAction, post?.postId, router]);
 
   const editorConfig = useMemo(
     () => ({
@@ -207,9 +227,15 @@ export function Editor({ post }: EditorProps) {
                 </Select>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="destructive">
-                  <Trash2 className="h-4 w-4" />
-                  <span>Delete</span>
+                <Button variant="destructive" onClick={deletePostFunc}>
+                  {isDeletingPost ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4" />
+                      <span>Delete</span>
+                    </>
+                  )}
                 </Button>
                 {post?.postPublished ? (
                   <UnPublishButton postId={post.postId} />
@@ -231,6 +257,17 @@ export function Editor({ post }: EditorProps) {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
               <p className="text-sm font-medium text-muted-foreground">
                 Saving content...
+              </p>
+            </div>
+          </div>
+        )}
+        {/* Delete Loading Overlay*/}
+        {isDeletingPost && (
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="flex flex-col items-center gap-2">
+              <Loader2 className="h-8 w-8 animate-spin text-destructive" />
+              <p className="text-sm font-medium text-destructive">
+                Deleting Post
               </p>
             </div>
           </div>

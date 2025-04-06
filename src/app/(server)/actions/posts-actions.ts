@@ -137,6 +137,26 @@ export const unPublishPost = withAuthActions
     }
   });
 
+export const deletePost = withAuthActions
+  .schema(
+    z.object({
+      postId: z.string(),
+    })
+  )
+  .action(async ({ parsedInput: { postId } }) => {
+    try {
+      await db.delete(post).where(eq(post.id, postId));
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  });
+
 export const aiTextCompletion = withAuthActions
   .schema(
     z.object({

@@ -22,8 +22,8 @@ export default async function middleware(req: NextRequest) {
   }
 
   // LOGS
-  console.log("Hostname:", hostname);
-  console.log("Blog Domain:", blogDomain);
+  // console.log("Hostname:", hostname);
+  // console.log("Blog Domain:", blogDomain);
 
   // If no subdomain, continue normally
   if (!blogDomain || blogDomain === process.env.NEXT_PUBLIC_ORIGIN_DOMAIN) {
