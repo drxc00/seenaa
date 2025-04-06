@@ -11,6 +11,8 @@ import {
 import { getAllBlogs } from "@/data/domain-dal";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function PublicBlogs() {
   const allBlogs = await getAllBlogs();
 
