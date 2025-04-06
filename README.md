@@ -42,7 +42,7 @@ npm run db:migrate
 npm run dev
 ```
 
-## Production Deployment
+## Docker Full Build
 
 For a full containerized deployment (both database and web app):
 
