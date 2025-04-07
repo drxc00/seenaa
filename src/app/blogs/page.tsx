@@ -1,80 +1,60 @@
-import { Icon } from "@/components/icon";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { getAllBlogs } from "@/data/domain-dal";
-import Link from "next/link";
+import Navbar from "@/components/front-navbar";
+import { getAllBlogs, getRecentBlogPosts } from "@/data/domain-dal";
+import { RecentPostCard } from "./_components/recent-post-card";
+import { BlogCard } from "./_components/blog-card";
 
 export const dynamic = "force-dynamic";
 
 export default async function PublicBlogs() {
-  const allBlogs = await getAllBlogs();
-
+  const [allBlogs, recentPosts] = await Promise.all([
+    getAllBlogs(),
+    getRecentBlogPosts(),
+  ]);
   return (
-    <main className="min-h-screen w-full px-4 py-8 md:py-12">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col items-center justify-center mb-8 ">
-          <div className="flex flex-col items-center justify-center gap-3">
-            <Icon />
+    <div>
+      <Navbar />
+      <main className="w-full px-4 py-4 md:py-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col items-center justify-center mb-8">
             <h1 className="text-2xl font-semibold md:text-3xl">blogs</h1>
           </div>
-          <Link
-            href={
-              process.env.NODE_ENV === "production"
-                ? `https://${process.env.NEXT_PUBLIC_ORIGIN_DOMAIN}`
-                : `http://localhost:3000`
-            }
-          >
-            <Button variant="link">seenaa.xyz</Button>
-          </Link>
-        </div>
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {allBlogs.map((blog) => (
-            <Link
-              key={blog.username}
-              href={
-                process.env.NODE_ENV === "production"
-                  ? `https://${blog.username}.${process.env.NEXT_PUBLIC_ORIGIN_DOMAIN}`
-                  : `http://${blog.username}.localhost:3000`
-              }
-            >
-              <Card className="h-full p-0">
-                <CardContent className="py-4 px-4 text-center flex flex-col gap-4">
-                  <CardHeader className="flex flex-col items-center text-center pt-2">
-                    <Avatar className="h-10 w-10 md:h-14 md:w-14">
-                      <AvatarImage src={blog.image || ""} alt={blog.name} />
-                      <AvatarFallback>{blog.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <CardTitle className="text-lg md:text-xl lowercase">
-                      {blog.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm">
-                      @{blog.username}
-                    </CardDescription>
-                  </CardHeader>
-                  <p className="line-clamp-2 text-sm text-muted-foreground">
-                    {blog.bio || "no bio available"}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </section>
+          <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {allBlogs.map((blog) => (
+              <BlogCard blog={blog} key={blog.username} />
+            ))}
+          </section>
 
-        {allBlogs.length === 0 && (
-          <div className="mt-8 flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-            <p className="text-muted-foreground">
-              No blogs available at the moment.
-            </p>
-          </div>
-        )}
-      </div>
-    </main>
+          {allBlogs.length === 0 && (
+            <div className="mt-8 flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+              <p className="text-muted-foreground">
+                No blogs available at the moment.
+              </p>
+            </div>
+          )}
+
+          <section className="mt-20">
+            <h2 className="text-2xl font-semibold mb-8 text-center">
+              recent posts
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {recentPosts.map((recentPost) => (
+                <RecentPostCard
+                  key={recentPost.post.id}
+                  postData={recentPost}
+                />
+              ))}
+            </div>
+
+            {recentPosts.length === 0 && (
+              <div className="mt-8 flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+                <p className="text-muted-foreground">
+                  No posts available at the moment.
+                </p>
+              </div>
+            )}
+          </section>
+        </div>
+      </main>
+    </div>
   );
 }

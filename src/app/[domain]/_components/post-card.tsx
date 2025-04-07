@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import { post } from "@/db/schema";
 import Link from "next/link";
@@ -9,12 +8,13 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Card className="overflow-hidden shadow-none transition-all duration-200 hover:shadow-sm p-0">
-      <CardContent className="p-4 flex flex-col gap-3">
-        <h3 className="text-lg font-semibold line-clamp-2 leading-tight">
-          {post?.title}
-        </h3>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+    <article className="group">
+      <Link
+        href={`/blog/${post?.slug}`}
+        className="block p-6 rounded-xl border border-border  hover:shadow-sm transition-all"
+      >
+        <div className="mb-2 text-sm text-muted-foreground">
+          {" "}
           <time dateTime={post?.createdAt.toISOString()}>
             {post?.createdAt.toLocaleDateString("en-US", {
               month: "short",
@@ -23,16 +23,16 @@ export function PostCard({ post }: PostCardProps) {
             })}
           </time>
         </div>
-        <p className="text-sm text-muted-foreground">{post?.excerpt}</p>
-        <div className="flex items-center justify-between">
-          <Link href={`/blog/${post?.slug}`}>
-            <div className="flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80">
-              <span>Read post</span>
-              <ArrowRight className="h-4 w-4" />
-            </div>
-          </Link>
+        <h3 className="text-lg font-medium mb-2 group-hover:text-rose-600 transition-colors">
+          {post?.title}
+        </h3>
+        <p className="text-muted-foreground mb-3 line-clamp-2">
+          {post?.excerpt}
+        </p>
+        <div className="flex items-center text-sm font-medium text-muted-foreground group-hover:text-rose-600 transition-colors">
+          Read post <ArrowRight size={16} className="ml-1" />
         </div>
-      </CardContent>
-    </Card>
+      </Link>
+    </article>
   );
 }

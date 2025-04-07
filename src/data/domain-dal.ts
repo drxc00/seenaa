@@ -61,3 +61,20 @@ export async function getAllBlogs() {
 
   return allBlogs;
 }
+
+export async function getRecentBlogPosts() {
+  /**
+   * Returns all post with user data
+   * Limits: 6
+   */
+
+  const posts = await db
+    .select()
+    .from(post)
+    .leftJoin(user, eq(post.userId, user.id))
+    .where(eq(post.published, true))
+    .orderBy(desc(post.id))
+    .limit(6);
+
+  return posts;
+}
