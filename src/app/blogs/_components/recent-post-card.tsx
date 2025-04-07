@@ -19,7 +19,10 @@ export function RecentPostCard({ postData }: RecentPostCardProps) {
       >
         <div className="flex items-center gap-3 mb-4">
           <Avatar className="w-10 h-10 border-1 border-primary/10">
-            <AvatarImage src={""} alt={""} />
+            <AvatarImage
+              src={postData.user?.image || ""}
+              alt={postData.user?.username || ""}
+            />
             <AvatarFallback className="font-medium bg-primary/5">
               {postData.user?.name.charAt(0) || ""}
             </AvatarFallback>
