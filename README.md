@@ -68,6 +68,10 @@ chmod +x deploy.sh
 ```bash
 ./deploy.sh
 ```
+3. If changes are made, use the update script so apply changes.
+```bash
+./update.sh
+```
 
 ## Live Demo
 
