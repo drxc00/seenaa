@@ -4,7 +4,7 @@ import { getBlogData, isSubDomainValid } from "@/data/domain-dal";
 import { PostCard } from "./_components/post-card";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Navbar from "@/components/front-navbar";
+// import Navbar from "@/components/front-navbar";
 
 type BlogData = Awaited<ReturnType<typeof getBlogData>>;
 type BlogPageProps = {
@@ -30,9 +30,8 @@ export default async function BlogPage({ params }: BlogPageProps) {
   const blogData: BlogData = await getBlogData(domain, 6);
 
   return (
-    <div className="">
-      <Navbar />
-      <main className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6">
+    <div>
+      <main className="w-full min-h-full mx-auto py-8 px-4 sm:px-6">
         <section className="mb-14 flex flex-col items-center text-center">
           <div className="mb-6 relative">
             <Avatar className="w-14 h-14 border-1 border-primary/10">
@@ -48,7 +47,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
           <p className="text-gray-500">@{blogData?.user.username}</p>
         </section>
 
-        <section className="mt-4">
+        <section>
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-1">
               <h2 className="text-lg font-semibold inline-block border-b-2 border-gray-200 pb-1">
@@ -75,13 +74,17 @@ export default async function BlogPage({ params }: BlogPageProps) {
               </h2>
             </div>
             <Link href="/blog">
-              <Button variant="link" size="sm">
+              <Button
+                variant="link"
+                size="sm"
+                className="cursor-pointer font-semibold"
+              >
                 View all
               </Button>
             </Link>
           </div>
 
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {blogData?.posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}

@@ -1,4 +1,4 @@
-import Navbar from "@/components/front-navbar";
+// import Navbar from "@/components/front-navbar";
 import { getAllBlogs, getRecentBlogPosts } from "@/data/domain-dal";
 import { RecentPostCard } from "./_components/recent-post-card";
 import { BlogCard } from "./_components/blog-card";
@@ -12,7 +12,7 @@ export default async function PublicBlogs() {
   ]);
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="w-full px-4 py-4 md:py-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center justify-center mb-8">
@@ -36,7 +36,7 @@ export default async function PublicBlogs() {
             <h2 className="text-2xl font-semibold mb-8 text-center">
               recent posts
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {recentPosts.map((recentPost) => (
                 <RecentPostCard
                   key={recentPost.post.id}
