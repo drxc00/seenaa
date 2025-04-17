@@ -11,7 +11,7 @@ export function PostCard({ post }: PostCardProps) {
     <article className="group">
       <Link
         href={`/blog/${post?.slug}`}
-        className="block p-6 rounded-xl border border-border  hover:shadow-sm transition-all"
+        className="block p-6 rounded-xl border border-border bg-card hover:shadow-sm transition-all"
       >
         <div className="mb-2 text-sm text-muted-foreground">
           {" "}
@@ -23,13 +23,11 @@ export function PostCard({ post }: PostCardProps) {
             })}
           </time>
         </div>
-        <h3 className="text-lg font-medium mb-2 group-hover:text-rose-600 transition-colors">
-          {post?.title}
-        </h3>
+        <h3 className="text-lg font-medium mb-2 ">{post?.title}</h3>
         <p className="text-muted-foreground mb-3 line-clamp-2">
           {post?.excerpt}
         </p>
-        <div className="flex items-center text-sm font-medium text-muted-foreground group-hover:text-rose-600 transition-colors">
+        <div className="flex items-center text-sm font-medium text-muted-foreground ">
           Read post <ArrowRight size={16} className="ml-1" />
         </div>
       </Link>

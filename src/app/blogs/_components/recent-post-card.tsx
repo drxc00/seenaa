@@ -44,7 +44,7 @@ export function RecentPostCard({ postData }: RecentPostCardProps) {
         <h3 className="text-lg font-medium mb-2 group-hover:text-rose-600 transition-colors">
           {postData.post?.title}
         </h3>
-        <p className="text-gray-700 mb-3 line-clamp-2">
+        <p className="text-muted-foreground mb-3 line-clamp-2">
           {postData.post?.excerpt}
         </p>
       </Link>

@@ -32,7 +32,7 @@ export function CreateNewPostButton() {
   };
   return (
     <Card
-      className="p-0 shadow-none border-dashed border-2 bg-background/60 cursor-pointer hover:bg-background/80 hover:border-zinc-300 trasition-colors"
+      className="p-0 shadow-none border-dashed bg-background/60 cursor-pointer hover:bg-background/80 hover:border-zinc-300 trasition-colors"
       onClick={handleCreation}
     >
       <CardContent className="p-4 flex flex-col justify-center items-center h-full crusor-pointer">
