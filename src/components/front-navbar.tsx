@@ -4,7 +4,7 @@ import { PiPaperPlaneThin } from "react-icons/pi";
 export default function Navbar() {
   return (
     <header className="border border-dashed">
-      <div className="container mx-auto border border-dashed border-t-0 border-b-0 px-4 py-6">
+      <div className="container mx-auto border border-dashed border-t-0 border-b-0 px-4 py-4">
         <nav className="flex justify-between items-center font-semibold text-lg">
           <Link
             href={

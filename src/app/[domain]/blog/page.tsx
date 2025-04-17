@@ -1,7 +1,6 @@
 import { getBlogData } from "@/data/domain-dal";
 import { PostCard } from "../_components/post-card";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 export default async function BlogsPage({
@@ -21,12 +20,12 @@ export default async function BlogsPage({
             : `http://${domain}.localhost:3000`
         }
       >
-        <Button variant="ghost">
+        <div className="flex flex-row gap-4 items-center">
           <ArrowLeft className="h-4 w-4" />
-          back
-        </Button>
+          <span>back</span>
+        </div>
       </Link>
-      <h1 className="text-3xl font-semibold">blogs</h1>
+      <h1 className="text-3xl font-semibold mt-4">blogs</h1>
       <section className="mt-6">
         <div className="grid gap-6">
           {blogData?.posts.map((post) => (

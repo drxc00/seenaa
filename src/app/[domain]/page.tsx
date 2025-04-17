@@ -31,7 +31,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   return (
     <div>
-      <main className="w-full min-h-full mx-auto py-8 px-4 sm:px-6">
+      <main className="w-full max-w-4xl min-h-full mx-auto py-8 px-4 sm:px-6">
         <section className="mb-14 flex flex-col items-center text-center">
           <div className="mb-6 relative">
             <Avatar className="w-14 h-14 border-1 border-primary/10">
@@ -84,7 +84,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid gap-6">
             {blogData?.posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}

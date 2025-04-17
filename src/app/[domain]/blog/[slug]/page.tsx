@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { getPostDataFromSlug } from "@/data/post-dal";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -35,30 +34,30 @@ export default async function PostPage({
   const content = postData[0]?.postContent || "";
 
   return (
-    <main className="flex justify-center items-start py-12 px-4 sm:px-6 lg:px-8">
+    <main className="flex justify-center items-start py-8 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-3xl">
         {/* Back Button */}
         <Link href="/">
-          <Button variant="ghost" className="mb-6">
+          <div className="flex flex-row gap-4 items-center">
             <ArrowLeft className="h-4 w-4" />
             <span>See all posts</span>
-          </Button>
+          </div>
         </Link>
 
-        <article>
+        <article className="mt-4">
           {/* Title and Metadata */}
           <div className="flex flex-col gap-2 mb-6">
             <h1 className="font-bold text-3xl sm:text-4xl lg:text-5xl text-start dark:text-white">
               {title}
             </h1>
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex flex-col md:flex-row md:items-center gap-2 text-muted-foreground">
               <p className="font-medium flex items-center gap-1">
                 {postData[0]?.user?.name}{" "}
                 <span className="text-muted-foreground/80">
                   (@{postData[0]?.user?.username})
                 </span>
               </p>
-              <span>|</span>
+              <span className="hidden md:block">|</span>
               <p>{postData[0]?.postCreatedAt.toDateString()}</p>
             </div>
           </div>
