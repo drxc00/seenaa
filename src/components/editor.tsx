@@ -147,7 +147,7 @@ export function Editor({ post }: EditorProps) {
         Link.configure({
           openOnClick: false,
           HTMLAttributes: {
-            class: "text-primary underline underline-offset-2",
+            class: "text-primary underline underline-offset-2 dark:text-white",
           },
         }),
         Image.configure({
@@ -161,7 +161,7 @@ export function Editor({ post }: EditorProps) {
       editorProps: {
         attributes: {
           class:
-            "prose prose-zinc prose-sm sm:prose-base lg:prose-lg xl:prose-xl focus:outline-none",
+            "prose prose-zinc dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-xl focus:outline-none dark:text-white",
         },
       },
       immediatelyRender: false,

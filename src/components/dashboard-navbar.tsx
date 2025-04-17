@@ -6,7 +6,14 @@ import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { AlignJustify, ExternalLink, Home, UserRound } from "lucide-react";
+import {
+  AlignJustify,
+  ExternalLink,
+  Home,
+  Moon,
+  Sun,
+  UserRound,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
   Sheet,
@@ -17,8 +24,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useTheme } from "next-themes";
 
 export function DashboardNavbar() {
+  const { theme, setTheme } = useTheme();
   const pathName = usePathname();
   const {
     data: session,
@@ -26,6 +35,9 @@ export function DashboardNavbar() {
   } = authClient.useSession();
   const blogDomain = session?.user?.username;
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
   return (
     <Card className="p-0 rounded-lg">
       <CardContent className="p-2 flex items-center justify-between">
@@ -64,6 +76,13 @@ export function DashboardNavbar() {
               </Button>
             </Link>
           )}
+          <Button size="lg" variant="outline" onClick={toggleTheme}>
+            {theme === "light" ? (
+              <Moon className="h-4 w-4" />
+            ) : (
+              <Sun className="h-4 w-4" />
+            )}
+          </Button>
           <SignOutButton />
         </div>
 
@@ -121,6 +140,13 @@ export function DashboardNavbar() {
                   </SheetClose>
                 </Link>
               )}
+              <Button onClick={toggleTheme}>
+                {theme === "light" ? (
+                  <Moon className="h-4 w-4" />
+                ) : (
+                  <Sun className="h-4 w-4" />
+                )}
+              </Button>
               <SignOutButton />
             </SheetContent>
           </Sheet>
