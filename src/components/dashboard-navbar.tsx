@@ -140,7 +140,7 @@ export function DashboardNavbar() {
                   </SheetClose>
                 </Link>
               )}
-              <Button onClick={toggleTheme}>
+              <Button size="lg" variant="outline" onClick={toggleTheme}>
                 {theme === "light" ? (
                   <Moon className="h-4 w-4" />
                 ) : (
