@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getRecentBlogPosts } from "@/data/domain-dal";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface RecentPostCardProps {
@@ -41,12 +42,13 @@ export function RecentPostCard({ postData }: RecentPostCardProps) {
             </div>
           </div>
         </div>
-        <h3 className="text-lg font-medium mb-2 group-hover:text-rose-600 transition-colors">
-          {postData.post?.title}
-        </h3>
+        <h3 className="text-lg font-medium mb-2">{postData.post?.title}</h3>
         <p className="text-muted-foreground mb-3 line-clamp-2">
           {postData.post?.excerpt}
         </p>
+        <div className="flex items-center text-sm font-medium text-muted-foreground ">
+          Read post <ArrowRight size={16} className="ml-1" />
+        </div>
       </Link>
     </article>
   );

@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <header className="border border-dashed">
       <div className="container mx-auto border border-dashed border-t-0 border-b-0 px-4 py-4">
-        <nav className="flex justify-between items-center font-semibold text-lg">
+        <nav className="flex justify-between items-center font-semibold">
           <Link
             href={
               process.env.NODE_ENV === "production"
@@ -26,7 +26,7 @@ export default function Navbar() {
             <PiPaperPlaneThin className="w-6 h-6" />
             <span>seenaa</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 text-md">
             <div className="flex items-center gap-6">
               <Link
                 href={

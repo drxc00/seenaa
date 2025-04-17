@@ -16,7 +16,7 @@ export default async function PublicBlogs() {
       <main className="w-full px-4 py-4 md:py-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center justify-center mb-8">
-            <h1 className="text-2xl font-semibold md:text-3xl">blogs</h1>
+            <h1 className="text-2xl font-semibold">blogs</h1>
           </div>
           <section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {allBlogs.map((blog) => (
