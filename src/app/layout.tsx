@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -24,15 +25,24 @@ export default function RootLayout({
         <link rel="icon" href="/seenaa_logo.png" sizes="any" />
       </head>
       <body className={`${raleway.className} antialiased`}>
-        {children}
-        <Toaster toastOptions={{
-          classNames: {
-            description: "text-foreground capitalize",
-          },
-          style: {
-            color: "var(--foreground)",
-          }
-        }} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster
+            toastOptions={{
+              classNames: {
+                description: "text-foreground capitalize",
+              },
+              style: {
+                color: "var(--foreground)",
+              },
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );

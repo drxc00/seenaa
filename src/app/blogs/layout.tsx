@@ -3,7 +3,7 @@ import { PiPaperPlaneThin } from "react-icons/pi";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex flex-col min-h-screen container-wrapper">
       <Navbar />
       <div className="flex-grow border border-dashed border-t-0 border-b-0 container mx-auto">
         {children}
