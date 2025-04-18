@@ -13,11 +13,11 @@ const cachedHomePageData = cache(getHomePageData, ["home-page-data"], {
 export default async function PreviewSection() {
   const data = await cachedHomePageData();
   return (
-    <div className="w-full max-w-3xl">
+    <div className="w-full max-w-3xl mb-14">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* View All Blogs */}
         <Link href="/blogs" className="group">
-          <div className="relative overflow-hidden border border-border rounded-xl p-8 h-48 flex flex-col justify-between transition-all">
+          <div className="relative overflow-hidden border border-border bg-card rounded-xl p-8 h-48 flex flex-col justify-between transition-all">
             <div className="flex justify-between items-start">
               <h3 className="text-2xl font-light">blogs</h3>
               <span className="text-xs text-muted-foreground px-2 py-1 rounded-full border border-border">
@@ -54,7 +54,7 @@ export default async function PreviewSection() {
 
         {/* View All Posts */}
         <Link href="/posts" className="group">
-          <div className="relative overflow-hidden border border-border rounded-xl p-8 h-48 flex flex-col justify-between transition-all duration-300 ">
+          <div className="relative overflow-hidden border border-border bg-card rounded-xl p-8 h-48 flex flex-col justify-between transition-all duration-300 ">
             <div className="flex justify-between items-start">
               <h3 className="text-2xl font-light">posts</h3>
               <span className="text-xs text-muted-foreground px-2 py-1 rounded-full border border-border">

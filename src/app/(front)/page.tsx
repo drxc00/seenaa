@@ -12,7 +12,7 @@ export default async function Home() {
     <>
       <main className="flex flex-col items-center justify-center p-4">
         <main className="flex-1">
-          <section className="container mx-auto px-4 py-20 md:py-28 flex flex-col items-center text-center">
+          <section className="container mx-auto px-4 py-20 md:py-24 flex flex-col items-center text-center">
             <h1 className="text-4xl md:text-6xl font-light mb-6 tracking-tight lowercase">
               Write, Share, <span className="font-normal">with seenaa.</span>
             </h1>
