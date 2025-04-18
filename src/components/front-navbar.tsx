@@ -12,8 +12,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border border-dashed">
-      <div className="container mx-auto border border-dashed border-t-0 border-b-0 px-4 py-4">
+    <header className="border-b border-dashed">
+      <div className="container mx-auto px-4 py-4 w-full max-w-screen-xl">
         <nav className="flex justify-between items-center font-semibold">
           <Link
             href={
@@ -38,7 +38,11 @@ export default function Navbar() {
                 start writing
               </Link>
             </div>
-            <div onClick={toggleTheme} aria-label="Toggle theme" className="cursor-pointer">
+            <div
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="cursor-pointer"
+            >
               {theme === "dark" ? "light" : "dark"}
             </div>
           </div>

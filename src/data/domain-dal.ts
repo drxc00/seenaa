@@ -48,6 +48,20 @@ export async function getBlogData(domain: string, limit?: number) {
   return { user: userData[0], posts };
 }
 
+export async function getRecentBlogs() {
+  /**
+   * Returns the recently create blog pages, i.e, users
+   */
+
+  const recentBlogs = await db
+    .select()
+    .from(user)
+    .orderBy(desc(user.createdAt))
+    .limit(4);
+
+  return recentBlogs;
+}
+
 export async function getAllBlogs() {
   const allBlogs = await db
     .select({
