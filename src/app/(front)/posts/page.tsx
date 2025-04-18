@@ -2,6 +2,8 @@ import { getRecentBlogPosts } from "@/data/domain-dal";
 import { RecentPostCard } from "./_components/recent-post-card";
 import { unstable_cache as cache } from "next/cache";
 
+export const dynamic = "force-dynamic";
+
 const cachedRecentPosts = cache(getRecentBlogPosts, ["posts"], {
   revalidate: 3600, // 1 hour
   tags: ["posts"],
