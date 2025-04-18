@@ -16,6 +16,7 @@ import {
   ImageIcon,
   Code,
   Minus,
+  MoreVertical,
 } from "lucide-react";
 import {
   Tooltip,
@@ -33,6 +34,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface EditorToolbarProps {
   editor: Editor;
@@ -108,164 +114,359 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
 
         <Separator orientation="vertical" className="mx-1 h-6" />
 
-        <ToolTipWrapper label="Heading 1">
-          <Toggle
-            size="sm"
-            pressed={editor.isActive("heading", { level: 1 })}
-            onPressedChange={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-            aria-label="Heading 1"
-          >
-            <Heading1 className="h-4 w-4" />
-          </Toggle>
-        </ToolTipWrapper>
-
-        <ToolTipWrapper label="Heading 2">
-          <Toggle
-            size="sm"
-            pressed={editor.isActive("heading", { level: 2 })}
-            onPressedChange={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-            aria-label="Heading 2"
-          >
-            <Heading2 className="h-4 w-4" />
-          </Toggle>
-        </ToolTipWrapper>
-
-        <Separator orientation="vertical" className="mx-1 h-6" />
-
-        <ToolTipWrapper label="Bullet List">
-          <Toggle
-            size="sm"
-            pressed={editor.isActive("bulletList")}
-            onPressedChange={() =>
-              editor.chain().focus().toggleBulletList().run()
-            }
-            aria-label="Bullet List"
-          >
-            <List className="h-4 w-4" />
-          </Toggle>
-        </ToolTipWrapper>
-
-        <ToolTipWrapper label="Ordered List">
-          <Toggle
-            size="sm"
-            pressed={editor.isActive("orderedList")}
-            onPressedChange={() =>
-              editor.chain().focus().toggleOrderedList().run()
-            }
-            aria-label="Ordered List"
-          >
-            <ListOrdered className="h-4 w-4" />
-          </Toggle>
-        </ToolTipWrapper>
-
-        <ToolTipWrapper label="Blockquote">
-          <Toggle
-            size="sm"
-            pressed={editor.isActive("blockquote")}
-            onPressedChange={() =>
-              editor.chain().focus().toggleBlockquote().run()
-            }
-            aria-label="Quote"
-          >
-            <Quote className="h-4 w-4" />
-          </Toggle>
-        </ToolTipWrapper>
-
-        <ToolTipWrapper label="Horizontal Rule">
-          <button
-            className="p-2 rounded hover:bg-muted"
-            onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            aria-label="Horizontal Rule"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
-        </ToolTipWrapper>
-
-        <Separator orientation="vertical" className="mx-1 h-6" />
-
-        <Popover>
-          <ToolTipWrapper label="Link">
-            <PopoverTrigger asChild>
-              <button
-                className={`p-2 rounded hover:bg-muted ${editor.isActive("link") ? "bg-muted" : ""}`}
-                aria-label="Link"
-              >
-                <LinkIcon className="h-4 w-4" />
-              </button>
-            </PopoverTrigger>
+        <div className="hidden lg:flex lg:flex-wrap gap-1 items-center">
+          <ToolTipWrapper label="Heading 1">
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("heading", { level: 1 })}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 1 }).run()
+              }
+              aria-label="Heading 1"
+            >
+              <Heading1 className="h-4 w-4" />
+            </Toggle>
           </ToolTipWrapper>
-          <PopoverContent className="w-80">
-            <div className="flex flex-col gap-2">
-              <Input
-                placeholder="https://example.com"
-                value={linkUrl}
-                onChange={(e) => setLinkUrl(e.target.value)}
-              />
-              <div className="flex justify-between">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => editor.chain().focus().unsetLink().run()}
-                  disabled={!editor.isActive("link")}
+
+          <ToolTipWrapper label="Heading 2">
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("heading", { level: 2 })}
+              onPressedChange={() =>
+                editor.chain().focus().toggleHeading({ level: 2 }).run()
+              }
+              aria-label="Heading 2"
+            >
+              <Heading2 className="h-4 w-4" />
+            </Toggle>
+          </ToolTipWrapper>
+
+          <Separator orientation="vertical" className="mx-1 h-6" />
+
+          <ToolTipWrapper label="Bullet List">
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("bulletList")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleBulletList().run()
+              }
+              aria-label="Bullet List"
+            >
+              <List className="h-4 w-4" />
+            </Toggle>
+          </ToolTipWrapper>
+
+          <ToolTipWrapper label="Ordered List">
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("orderedList")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleOrderedList().run()
+              }
+              aria-label="Ordered List"
+            >
+              <ListOrdered className="h-4 w-4" />
+            </Toggle>
+          </ToolTipWrapper>
+
+          <ToolTipWrapper label="Blockquote">
+            <Toggle
+              size="sm"
+              pressed={editor.isActive("blockquote")}
+              onPressedChange={() =>
+                editor.chain().focus().toggleBlockquote().run()
+              }
+              aria-label="Quote"
+            >
+              <Quote className="h-4 w-4" />
+            </Toggle>
+          </ToolTipWrapper>
+
+          <ToolTipWrapper label="Horizontal Rule">
+            <button
+              className="p-2 rounded hover:bg-muted"
+              onClick={() => editor.chain().focus().setHorizontalRule().run()}
+              aria-label="Horizontal Rule"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
+          </ToolTipWrapper>
+
+          <Separator orientation="vertical" className="mx-1 h-6" />
+
+          <Popover>
+            <ToolTipWrapper label="Link">
+              <PopoverTrigger asChild>
+                <button
+                  className={`p-2 rounded hover:bg-muted ${editor.isActive("link") ? "bg-muted" : ""}`}
+                  aria-label="Link"
                 >
-                  Remove Link
-                </Button>
-                <Button size="sm" onClick={setLink}>
-                  Save Link
+                  <LinkIcon className="h-4 w-4" />
+                </button>
+              </PopoverTrigger>
+            </ToolTipWrapper>
+            <PopoverContent className="w-80">
+              <div className="flex flex-col gap-2">
+                <Input
+                  placeholder="https://example.com"
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                />
+                <div className="flex justify-between">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => editor.chain().focus().unsetLink().run()}
+                    disabled={!editor.isActive("link")}
+                  >
+                    Remove Link
+                  </Button>
+                  <Button size="sm" onClick={setLink}>
+                    Save Link
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <ToolTipWrapper label="Image">
+              <PopoverTrigger asChild>
+                <button
+                  className="p-2 rounded hover:bg-muted"
+                  aria-label="Image"
+                >
+                  <ImageIcon className="h-4 w-4" />
+                </button>
+              </PopoverTrigger>
+            </ToolTipWrapper>
+            <PopoverContent className="w-80">
+              <div className="flex flex-col gap-2">
+                <Input
+                  placeholder="https://example.com/image.jpg"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                />
+                <Button size="sm" onClick={addImage}>
+                  Add Image
                 </Button>
               </div>
-            </div>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
 
-        <Popover>
-          <ToolTipWrapper label="Image">
-            <PopoverTrigger asChild>
-              <button className="p-2 rounded hover:bg-muted" aria-label="Image">
-                <ImageIcon className="h-4 w-4" />
-              </button>
-            </PopoverTrigger>
+          <Separator orientation="vertical" className="mx-1 h-6" />
+
+          <ToolTipWrapper label="Undo">
+            <button
+              className="p-2 rounded hover:bg-muted disabled:opacity-50"
+              onClick={() => editor.chain().focus().undo().run()}
+              disabled={!editor.can().undo()}
+              aria-label="Undo"
+            >
+              <Undo className="h-4 w-4" />
+            </button>
           </ToolTipWrapper>
-          <PopoverContent className="w-80">
+          <ToolTipWrapper label="Redo">
+            <button
+              className="p-2 rounded hover:bg-muted disabled:opacity-50"
+              onClick={() => editor.chain().focus().redo().run()}
+              disabled={!editor.can().redo()}
+              aria-label="Redo"
+            >
+              <Redo className="h-4 w-4" />
+            </button>
+          </ToolTipWrapper>
+        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild className="block lg:hidden">
+            <Button variant="outline" size="sm">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-80">
             <div className="flex flex-col gap-2">
-              <Input
-                placeholder="https://example.com/image.jpg"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-              />
-              <Button size="sm" onClick={addImage}>
-                Add Image
-              </Button>
+              <ToolTipWrapper label="Heading 1">
+                <Toggle
+                  size="sm"
+                  pressed={editor.isActive("heading", { level: 1 })}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleHeading({ level: 1 }).run()
+                  }
+                  aria-label="Heading 1"
+                  className="w-full justify-start"
+                >
+                  <Heading1 className="h-4 w-4 mr-2" />
+                  Heading 1
+                </Toggle>
+              </ToolTipWrapper>
+
+              <ToolTipWrapper label="Heading 2">
+                <Toggle
+                  size="sm"
+                  pressed={editor.isActive("heading", { level: 2 })}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleHeading({ level: 2 }).run()
+                  }
+                  aria-label="Heading 2"
+                  className="w-full justify-start"
+                >
+                  <Heading2 className="h-4 w-4 mr-2" />
+                  Heading 2
+                </Toggle>
+              </ToolTipWrapper>
+
+              <Separator />
+
+              <ToolTipWrapper label="Bullet List">
+                <Toggle
+                  size="sm"
+                  pressed={editor.isActive("bulletList")}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleBulletList().run()
+                  }
+                  aria-label="Bullet List"
+                  className="w-full justify-start"
+                >
+                  <List className="h-4 w-4 mr-2" />
+                  Bullet List
+                </Toggle>
+              </ToolTipWrapper>
+
+              <ToolTipWrapper label="Ordered List">
+                <Toggle
+                  size="sm"
+                  pressed={editor.isActive("orderedList")}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleOrderedList().run()
+                  }
+                  aria-label="Ordered List"
+                  className="w-full justify-start"
+                >
+                  <ListOrdered className="h-4 w-4 mr-2" />
+                  Ordered List
+                </Toggle>
+              </ToolTipWrapper>
+
+              <ToolTipWrapper label="Blockquote">
+                <Toggle
+                  size="sm"
+                  pressed={editor.isActive("blockquote")}
+                  onPressedChange={() =>
+                    editor.chain().focus().toggleBlockquote().run()
+                  }
+                  aria-label="Quote"
+                  className="w-full justify-start"
+                >
+                  <Quote className="h-4 w-4 mr-2" />
+                  Blockquote
+                </Toggle>
+              </ToolTipWrapper>
+
+              <ToolTipWrapper label="Horizontal Rule">
+                <button
+                  className="p-2 rounded hover:bg-muted w-full text-left flex items-center"
+                  onClick={() =>
+                    editor.chain().focus().setHorizontalRule().run()
+                  }
+                  aria-label="Horizontal Rule"
+                >
+                  <Minus className="h-4 w-4 mr-2" />
+                  Horizontal Rule
+                </button>
+              </ToolTipWrapper>
+
+              <Separator />
+
+              <Popover>
+                <ToolTipWrapper label="Link">
+                  <PopoverTrigger asChild>
+                    <button
+                      className={`p-2 rounded hover:bg-muted w-full text-left flex items-center ${editor.isActive("link") ? "bg-muted" : ""}`}
+                      aria-label="Link"
+                    >
+                      <LinkIcon className="h-4 w-4 mr-2" />
+                      Link
+                    </button>
+                  </PopoverTrigger>
+                </ToolTipWrapper>
+                <PopoverContent className="w-80">
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      placeholder="https://example.com"
+                      value={linkUrl}
+                      onChange={(e) => setLinkUrl(e.target.value)}
+                    />
+                    <div className="flex justify-between">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => editor.chain().focus().unsetLink().run()}
+                        disabled={!editor.isActive("link")}
+                      >
+                        Remove Link
+                      </Button>
+                      <Button size="sm" onClick={setLink}>
+                        Save Link
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <ToolTipWrapper label="Image">
+                  <PopoverTrigger asChild>
+                    <button
+                      className="p-2 rounded hover:bg-muted w-full text-left flex items-center"
+                      aria-label="Image"
+                    >
+                      <ImageIcon className="h-4 w-4 mr-2" />
+                      Image
+                    </button>
+                  </PopoverTrigger>
+                </ToolTipWrapper>
+                <PopoverContent className="w-80">
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      placeholder="https://example.com/image.jpg"
+                      value={imageUrl}
+                      onChange={(e) => setImageUrl(e.target.value)}
+                    />
+                    <Button size="sm" onClick={addImage}>
+                      Add Image
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <Separator />
+
+              <ToolTipWrapper label="Undo">
+                <button
+                  className="p-2 rounded hover:bg-muted disabled:opacity-50 w-full text-left flex items-center"
+                  onClick={() => editor.chain().focus().undo().run()}
+                  disabled={!editor.can().undo()}
+                  aria-label="Undo"
+                >
+                  <Undo className="h-4 w-4 mr-2" />
+                  Undo
+                </button>
+              </ToolTipWrapper>
+              <ToolTipWrapper label="Redo">
+                <button
+                  className="p-2 rounded hover:bg-muted disabled:opacity-50 w-full text-left flex items-center"
+                  onClick={() => editor.chain().focus().redo().run()}
+                  disabled={!editor.can().redo()}
+                  aria-label="Redo"
+                >
+                  <Redo className="h-4 w-4 mr-2" />
+                  Redo
+                </button>
+              </ToolTipWrapper>
             </div>
-          </PopoverContent>
-        </Popover>
-
-        <Separator orientation="vertical" className="mx-1 h-6" />
-
-        <ToolTipWrapper label="Undo">
-          <button
-            className="p-2 rounded hover:bg-muted disabled:opacity-50"
-            onClick={() => editor.chain().focus().undo().run()}
-            disabled={!editor.can().undo()}
-            aria-label="Undo"
-          >
-            <Undo className="h-4 w-4" />
-          </button>
-        </ToolTipWrapper>
-        <ToolTipWrapper label="Redo">
-          <button
-            className="p-2 rounded hover:bg-muted disabled:opacity-50"
-            onClick={() => editor.chain().focus().redo().run()}
-            disabled={!editor.can().redo()}
-            aria-label="Redo"
-          >
-            <Redo className="h-4 w-4" />
-          </button>
-        </ToolTipWrapper>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </TooltipProvider>
   );
