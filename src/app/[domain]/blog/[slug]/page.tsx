@@ -64,7 +64,7 @@ export default async function PostPage({
                 </span>
               </p>
               <span className="hidden md:block">|</span>
-              <p>{postData[0]?.postCreatedAt.toDateString()}</p>
+              <p>{new Date(postData[0]?.postCreatedAt).toDateString()}</p>
             </div>
           </div>
 
