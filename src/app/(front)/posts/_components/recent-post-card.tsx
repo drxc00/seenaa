@@ -32,8 +32,8 @@ export function RecentPostCard({ postData }: RecentPostCardProps) {
             <div className="font-medium lowercase">{postData.user?.name}</div>
             <div className="mb-2 text-sm text-muted-foreground">
               {" "}
-              <time dateTime={postData.post?.createdAt.toISOString()}>
-                {postData.post?.createdAt.toLocaleDateString("en-US", {
+              <time dateTime={new Date(postData.post?.createdAt).toISOString()}>
+                {new Date(postData.post?.createdAt).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",

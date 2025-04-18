@@ -6,6 +6,7 @@ import { withAuthActions } from "@/lib/safe-actions";
 import { textCompletion } from "@/models/completion";
 import { generateSlug } from "@/utils/post-utils";
 import { eq } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
 export const createNewPost = withAuthActions.action(
@@ -73,6 +74,11 @@ export const savePostContent = withAuthActions
           })
           .where(eq(post.id, postId));
 
+        revalidateTag("blog-data");
+        revalidateTag("posts");
+        revalidateTag("post-data");
+        revalidateTag("home-page-data");
+
         return {
           success: true,
         };
@@ -100,6 +106,10 @@ export const publishPost = withAuthActions
         })
         .where(eq(post.id, postId));
 
+      revalidateTag("home-page-data");
+      revalidateTag("blog-data");
+      revalidateTag("posts");
+
       return {
         success: true,
       };
@@ -126,6 +136,9 @@ export const unPublishPost = withAuthActions
         })
         .where(eq(post.id, postId));
 
+      revalidateTag("home-page-data");
+      revalidateTag("blog-data");
+      revalidateTag("posts");
       return {
         success: true,
       };
@@ -146,6 +159,9 @@ export const deletePost = withAuthActions
   .action(async ({ parsedInput: { postId } }) => {
     try {
       await db.delete(post).where(eq(post.id, postId));
+      revalidateTag("home-page-data");
+      revalidateTag("blog-data");
+      revalidateTag("posts");
       return {
         success: true,
       };

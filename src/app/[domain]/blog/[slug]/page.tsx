@@ -1,6 +1,12 @@
 import { getPostDataFromSlug } from "@/data/post-dal";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { unstable_cache as cache } from "next/cache";
+
+const cachedPostData = cache(getPostDataFromSlug, ["post-data"], {
+  revalidate: 3600, // 1 hour
+  tags: ["post-data"],
+});
 
 export async function generateMetadata({
   params,
@@ -28,7 +34,7 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const postData = await getPostDataFromSlug(slug);
+  const postData = await cachedPostData(slug);
 
   const title = postData[0]?.postTitle || "Untitled";
   const content = postData[0]?.postContent || "";
@@ -58,7 +64,7 @@ export default async function PostPage({
                 </span>
               </p>
               <span className="hidden md:block">|</span>
-              <p>{postData[0]?.postCreatedAt.toDateString()}</p>
+              <p>{new Date(postData[0]?.postCreatedAt).toDateString()}</p>
             </div>
           </div>
 

@@ -33,15 +33,9 @@ import { Button } from "./ui/button";
 import NextLink from "next/link";
 import { PublishButton, UnPublishButton } from "./publishing-buttons";
 import { MODELS } from "@/models/available-models";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { useRouter } from "next/navigation";
+import { ModelSelect } from "./model-selector";
 
 interface EditorProps {
   post?: {
@@ -191,7 +185,7 @@ export function Editor({ post }: EditorProps) {
                 <NextLink href="/home">
                   <Button variant="outline">
                     <ChevronLeft className="h-4 w-4" />
-                    <span>Back</span>
+                    <span className="hidden lg:inline">Back</span>
                   </Button>
                 </NextLink>
                 <Button
@@ -213,34 +207,18 @@ export function Editor({ post }: EditorProps) {
                   }}
                 >
                   <SaveIcon className="h-4 w-4" />
-                  <span>Save</span>
+                  <span className="hidden lg:inline">Save</span>
                 </Button>
               </div>
 
               {/* Model Selector */}
               <div className="flex items-center gap-2">
                 <EditorToolbar editor={editor} />
-                <Select
-                  defaultValue={completionModel}
-                  onValueChange={(value) => {
-                    setCompletionModel(value);
-                  }}
-                >
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Select a model" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-60 overflow-auto">
-                    {Object.keys(MODELS).map((model) => {
-                      const modelData = MODELS[model as keyof typeof MODELS];
-                      return (
-                        <SelectItem key={modelData.id} value={modelData.id}>
-                          <modelData.icon />
-                          {modelData.name}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
+                <ModelSelect
+                  MODELS={MODELS}
+                  completionModel={completionModel}
+                  setCompletionModel={setCompletionModel}
+                />
                 <Tooltip>
                   <TooltipTrigger>
                     <div className="flex items-center gap-1 text-muted-foreground text-sm hover:text-foreground cursor-pointer">
@@ -270,7 +248,7 @@ export function Editor({ post }: EditorProps) {
                   ) : (
                     <>
                       <Trash2 className="h-4 w-4" />
-                      <span>Delete</span>
+                      <span className="hidden lg:inline">Delete</span>
                     </>
                   )}
                 </Button>

@@ -2,6 +2,12 @@ import { getBlogData } from "@/data/domain-dal";
 import { PostCard } from "../_components/post-card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { unstable_cache as cache } from "next/cache";
+
+const cachedBlogData = cache(getBlogData, ["blog-data"], {
+  revalidate: 3600, // 1 hour
+  tags: ["blog-data"],
+});
 
 export default async function BlogsPage({
   params,
@@ -9,7 +15,7 @@ export default async function BlogsPage({
   params: Promise<{ domain: string }>;
 }) {
   const { domain } = await params;
-  const blogData = await getBlogData(domain);
+  const blogData = await cachedBlogData(domain);
 
   return (
     <main className="w-full max-w-4xl mx-auto py-10 px-4 sm:px-6">

@@ -34,8 +34,8 @@ export default async function dashboard() {
             </div>
             <CardContent className="px-4 pb-4 flex flex-col gap-4">
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>Created: {post.createdAt.toDateString()}</p>
-                <p>Updated: {post.updatedAt.toDateString()}</p>
+                <p>Created: {new Date(post.createdAt).toDateString()}</p>
+                <p>Updated: {new Date(post.updatedAt).toDateString()}</p>
               </div>
               <Link href={`/post/${post.id}`} className="w-full">
                 <Button variant="outline" className="w-full justify-between">

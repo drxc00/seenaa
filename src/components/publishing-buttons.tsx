@@ -54,7 +54,7 @@ export function PublishButton({
       ) : (
         <>
           <Send className="h-4 w-4" />
-          <span>Publish</span>
+          <span className="hidden lg:inline">Publish</span>
         </>
       )}
     </Button>
@@ -81,7 +81,7 @@ export function UnPublishButton({ postId }: { postId: string }) {
       ) : (
         <>
           <PenBox className="h-4 w-4" />
-          <span>Unpublish</span>
+          <span className="hidden lg:inline">Unpublish</span>
         </>
       )}
     </Button>
