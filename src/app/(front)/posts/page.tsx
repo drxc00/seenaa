@@ -1,8 +1,14 @@
 import { getRecentBlogPosts } from "@/data/domain-dal";
 import { RecentPostCard } from "./_components/recent-post-card";
+import { unstable_cache as cache } from "next/cache";
+
+const cachedRecentPosts = cache(getRecentBlogPosts, ["posts"], {
+  revalidate: 3600, // 1 hour
+  tags: ["posts"],
+});
 
 export default async function PostsPage() {
-  const recentPosts = await getRecentBlogPosts();
+  const recentPosts = await cachedRecentPosts();
   return (
     <main className="w-full px-4 py-4 md:py-8">
       <div className="mx-auto max-w-7xl">

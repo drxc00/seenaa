@@ -3,9 +3,15 @@ import { getHomePageData } from "@/data/general-data";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { unstable_cache as cache } from "next/cache";
+
+const cachedHomePageData = cache(getHomePageData, ["home-page-data"], {
+  revalidate: 3600, // 1 hour
+  tags: ["home-page-data"],
+});
 
 export default async function PreviewSection() {
-  const data = await getHomePageData();
+  const data = await cachedHomePageData();
   return (
     <div className="w-full max-w-3xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

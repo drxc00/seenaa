@@ -15,8 +15,8 @@ export function PostCard({ post }: PostCardProps) {
       >
         <div className="mb-2 text-sm text-muted-foreground">
           {" "}
-          <time dateTime={post?.createdAt.toISOString()}>
-            {post?.createdAt.toLocaleDateString("en-US", {
+          <time dateTime={new Date(post?.createdAt).toISOString()}>
+            {new Date(post?.createdAt).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",

@@ -4,7 +4,12 @@ import { getBlogData, isSubDomainValid } from "@/data/domain-dal";
 import { PostCard } from "./_components/post-card";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-// import Navbar from "@/components/front-navbar";
+import { unstable_cache as cache } from "next/cache";
+
+const cachedBlogData = cache(getBlogData, ["blog-data"], {
+  revalidate: 3600, // 1 hour
+  tags: ["blog-data"],
+});
 
 type BlogData = Awaited<ReturnType<typeof getBlogData>>;
 type BlogPageProps = {
@@ -27,7 +32,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
   }
 
   // Limits the posts to 6 for the home page
-  const blogData: BlogData = await getBlogData(domain, 6);
+  const blogData: BlogData = await cachedBlogData(domain, 6);
 
   return (
     <div>
