@@ -1,7 +1,7 @@
 import { user } from "@/db/auth-schema";
 import { db } from "@/db/drizzle";
 import { post } from "@/db/schema";
-import { count, desc } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import "server-only";
 
 export async function getHomePageData() {
@@ -12,7 +12,10 @@ export async function getHomePageData() {
    */
 
   const writersPromise = db.select().from(user).orderBy(desc(user.createdAt));
-  const postsPromise = db.select({ count: count() }).from(post);
+  const postsPromise = db
+    .select({ count: count() })
+    .from(post)
+    .where(eq(post.published, true));
 
   const [writers, posts] = await Promise.all([writersPromise, postsPromise]);
 
