@@ -18,7 +18,7 @@ export default async function PostsPage() {
           <h1 className="text-2xl font-semibold">recent posts</h1>
         </div>
       </div>
-      <div className="px-14 grid grid-cols-1 gap-8">
+      <div className="px-0 md:px-14 grid grid-cols-1 gap-8">
         {recentPosts.map((recentPost) => (
           <RecentPostCard key={recentPost.post.id} postData={recentPost} />
         ))}
