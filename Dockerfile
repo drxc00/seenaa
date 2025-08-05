@@ -4,7 +4,7 @@ FROM node:alpine AS base
 FROM base AS deps
 
 # Required build tools for native modules
-# RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
+RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
 
 WORKDIR /app
 
