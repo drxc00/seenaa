@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "@/db/drizzle";
 import { post } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { user } from "@/db/auth-schema";
 
 export async function getPostData(postId: string) {
@@ -40,6 +40,15 @@ export async function getUserPosts(userId: string) {
     .select()
     .from(post)
     .where(eq(post.userId, userId))
+    .orderBy(desc(post.createdAt));
+  return userPosts;
+}
+
+export async function getPublishedUserPosts(userId: string) {
+  const userPosts = await db
+    .select()
+    .from(post)
+    .where(and(eq(post.userId, userId), eq(post.published, true)))
     .orderBy(desc(post.createdAt));
   return userPosts;
 }
