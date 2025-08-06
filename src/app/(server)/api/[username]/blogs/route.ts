@@ -41,6 +41,7 @@ export async function GET(
       excerpt: post.excerpt,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
+      slug: post.slug,
     }));
 
     return NextResponse.json({ posts: posts }, { status: 200 });
