@@ -3,7 +3,6 @@ import Link from "next/link";
 import PreviewSection from "./_components/preview-section";
 import { Suspense } from "react";
 import PreviewSectionSkeleton from "./_components/preview-section-skeleton";
-import { TypewriterParagraph } from "./_components/typewriter-paragraph";
 import { getAuthData } from "@/data/auth-data";
 
 export default async function Home() {
@@ -16,7 +15,11 @@ export default async function Home() {
             <h1 className="text-4xl md:text-6xl font-light mb-6 tracking-tight lowercase">
               Write, Share, <span className="font-normal">with seenaa.</span>
             </h1>
-            <TypewriterParagraph />
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10">
+              An open-source writing platform where ideas find their voice.
+              Create your personal space and let your words resonate. With AI
+              stuff too.
+            </p>
             <div className="flex flex-col gap-4 items-center justify-center">
               {authData?.session ? (
                 <div className="flex flex-col sm:flex-row">

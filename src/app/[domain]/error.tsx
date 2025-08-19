@@ -12,10 +12,9 @@ export default function Error({ error }: { error: Error }) {
         <Icon />
       </div>
       <h1 className="text-2xl font-medium mb-3">Something went wrong</h1>
-      <p className="text-gray-600 mb-6 max-w-md">{sanitzedError}</p>
+      <p className="text-muted-foreground mb-6 max-w-md">{sanitzedError}</p>
       <Link
         href={
-          /**Should be replace with actual url */
           process.env.NODE_ENV === "production" ? "/" : "http://localhost:3000"
         }
       >
