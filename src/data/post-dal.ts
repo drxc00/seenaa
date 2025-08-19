@@ -17,7 +17,7 @@ export async function getPostData(postId: string) {
   return postData;
 }
 
-export async function getPostDataFromSlug(slug: string) {
+export async function getPostDataFromSlug(domain: string, slug: string) {
   const postData = await db
     .select({
       postTitle: post.title,
@@ -28,7 +28,7 @@ export async function getPostDataFromSlug(slug: string) {
       user: user,
     })
     .from(post)
-    .where(eq(post.slug, slug))
+    .where(and(eq(post.slug, slug), eq(user.username, domain)))
     .leftJoin(user, eq(post.userId, user.id))
     .limit(1);
 

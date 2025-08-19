@@ -18,7 +18,7 @@ export async function generateMetadata({
    * Fetches the post data from the database
    */
   const { domain, slug } = await params;
-  const postData = await getPostDataFromSlug(slug);
+  const postData = await getPostDataFromSlug(domain, slug);
   const title = postData[0]?.postTitle || "Untitled";
   const content = postData[0]?.postContent || "";
 
@@ -31,10 +31,13 @@ export async function generateMetadata({
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ domain: string; slug: string }>;
 }) {
-  const { slug } = await params;
-  const postData = await cachedPostData(slug);
+  const { domain, slug } = await params;
+  const postData = await cachedPostData(domain, slug);
+
+  // Check if post exists. If not throw an error to trigger the 404 page
+  if (postData.length == 0) throw new Error("Post not found");
 
   const title = postData[0]?.postTitle || "Untitled";
   const content = postData[0]?.postContent || "";
