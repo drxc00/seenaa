@@ -14,8 +14,10 @@ import { Editor } from "@tiptap/react";
 
 export function PublishButton({
   postId,
+  postTitle,
   editor,
 }: {
+  postTitle: string;
   postId: string;
   editor: Editor;
 }) {
@@ -29,6 +31,7 @@ export function PublishButton({
 
     const resultSave = await savePostContent({
       postContent: content,
+      postTitle: postTitle,
       postContentTextOnly: textContent,
       postId,
     });

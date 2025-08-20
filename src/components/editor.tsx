@@ -280,6 +280,7 @@ export function Editor({ post }: EditorProps) {
                   <PublishButton
                     postId={post?.postId as string}
                     editor={editor}
+                    postTitle={title}
                   />
                 )}
               </div>
