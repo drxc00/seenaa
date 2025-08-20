@@ -105,7 +105,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
           <Toggle
             size="sm"
             pressed={editor.isActive("code")}
-            onPressedChange={() => editor.chain().focus().toggleCode().run()}
+            onPressedChange={() => editor.commands.setCodeBlock()}
             aria-label="Code"
           >
             <Code className="h-4 w-4" />

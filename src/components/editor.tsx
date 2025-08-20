@@ -6,12 +6,20 @@ import Image from "@tiptap/extension-image";
 import { EditorToolbar } from "./editor-toolbar";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import CodeBlock from "@tiptap/extension-code-block";
 import {
   AIAutoComplete,
   SaveShortcut,
-  TitleNode,
+  // TitleNode,
 } from "@/lib/editor-extensions";
+import {
+  // FontFamily,
+  TextStyle,
+  // FontSize,
+  // LineHeight,
+  // Color,
+} from "@tiptap/extension-text-style";
 import { useAction } from "next-safe-action/hooks";
 import {
   aiTextCompletion,
@@ -36,6 +44,8 @@ import { MODELS } from "@/models/available-models";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
 import { useRouter } from "next/navigation";
 import { ModelSelect } from "./model-selector";
+import { Input } from "./ui/input";
+import { Separator } from "./ui/separator";
 
 interface EditorProps {
   post?: {
@@ -50,6 +60,10 @@ export function Editor({ post }: EditorProps) {
   const [completionModel, setCompletionModel] = useState<string>(
     MODELS.GEMINI.id // gemini-2.0-flash-lite-001 default
   );
+  const [title, setTitle] = useState<string>(post?.postTitle ?? "Untitled");
+
+  // Create a ref to hold the current title
+  const titleRef = useRef<string>(title);
 
   const router = useRouter();
 
@@ -61,11 +75,12 @@ export function Editor({ post }: EditorProps) {
   const { executeAsync: invokeTextGeneration } = useAction(aiTextCompletion);
 
   const handleSave = useCallback(
-    async (content: string, textContent: string) => {
+    async (title: string, content: string, textContent: string) => {
       /** Save the content to the server */
       try {
         const result = await invokeSaveAction({
           postId: post?.postId as string,
+          postTitle: title,
           postContent: content,
           postContentTextOnly: textContent,
         });
@@ -121,8 +136,9 @@ export function Editor({ post }: EditorProps) {
   const editorConfig = useMemo(
     () => ({
       extensions: [
-        TitleNode.configure({ title: post?.postTitle ?? "Untitled" }),
-        SaveShortcut.configure({ onSave: handleSave }),
+        // TitleNode.configure({ title: post?.postTitle ?? "Untitled" }),
+        CodeBlock,
+        SaveShortcut.configure({ titleRef: titleRef, onSave: handleSave }),
         AIAutoComplete.configure({
           completionFunc: completionFunc,
           model: completionModel,
@@ -134,8 +150,8 @@ export function Editor({ post }: EditorProps) {
             }
             return "";
           },
-          emptyEditorClass:
-            "cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-2 before:left-2 before:text-mauve-11 before:opacity-50 before-pointer-events-none",
+          // emptyEditorClass:
+          //   "cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-2 before:left-2 before:text-mauve-11 before:opacity-50 before-pointer-events-none",
         }),
         StarterKit,
         Link.configure({
@@ -144,6 +160,7 @@ export function Editor({ post }: EditorProps) {
             class: "text-primary underline underline-offset-2 dark:text-white",
           },
         }),
+        TextStyle,
         Image.configure({
           HTMLAttributes: {
             class: "rounded-md max-w-full mx-auto my-4",
@@ -151,11 +168,11 @@ export function Editor({ post }: EditorProps) {
         }),
         CharacterCount,
       ],
-      content: `<h1 data-type="title">${post?.postTitle ?? "Untitled"}</h1>${post?.postContent ?? "<p></p>"}`,
+      // content: `<h1 data-type="title">${post?.postTitle ?? "Untitled"}</h1>${post?.postContent ?? "<p></p>"}`,
+      content: post?.postContent ?? "<p></p>",
       editorProps: {
         attributes: {
-          class:
-            "prose prose-zinc dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-xl focus:outline-none dark:text-white",
+          class: "bg-background focus:outline-none",
         },
       },
       immediatelyRender: false,
@@ -173,6 +190,10 @@ export function Editor({ post }: EditorProps) {
       editor.commands.updateCompletionModel(completionModel);
     }
   }, [completionModel, editor]);
+
+  useEffect(() => {
+    titleRef.current = title;
+  }, [title]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -196,6 +217,7 @@ export function Editor({ post }: EditorProps) {
                     const response = await invokeSaveAction({
                       postId: post?.postId as string,
                       postContent: editor.getHTML(),
+                      postTitle: title,
                       postContentTextOnly: editor.getText(),
                     });
 
@@ -294,7 +316,18 @@ export function Editor({ post }: EditorProps) {
         {/* Paper-Like Editor Content */}
         <div className="flex-grow flex justify-center py-10 px-4">
           <div className="w-full max-w-4xl bg-background/50 dark:bg-background rounded-lg overflow-hidden">
-            <div className="p-8 min-h-[calc(100vh-12rem)]">
+            <div className="pt-6 pb-2">
+              <Input
+                className="shadow-none text-3xl font-semibold focus-visible:ring-0 border-none bg-transparent h-auto px-0"
+                placeholder="Untitled Document"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                maxLength={100}
+                autoFocus
+              />
+            </div>
+            <Separator className="mb-4" />
+            <div className="min-h-[calc(100vh-12rem)]">
               <EditorContent
                 editor={editor}
                 className="min-h-[calc(100vh-14rem)]"

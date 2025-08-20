@@ -12,6 +12,7 @@ export const SaveShortcut = Node.create({
   name: "save-shortcut",
   addOptions() {
     return {
+      titleRef: undefined,
       onSave: () => {},
     };
   },
@@ -31,7 +32,11 @@ export const SaveShortcut = Node.create({
         );
         const contentHTML = this.editor.getHTML();
         const contentText = this.editor.getText();
-        this.options.onSave(contentHTML, contentText);
+        this.options.onSave(
+          this.options.titleRef.current,
+          contentHTML,
+          contentText
+        );
         return true;
       },
     };

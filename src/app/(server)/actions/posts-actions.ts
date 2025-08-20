@@ -36,27 +36,31 @@ export const savePostContent = withAuthActions
   .schema(
     z.object({
       postId: z.string(),
+      postTitle: z.string(),
       postContent: z.string(),
       postContentTextOnly: z.string().optional(),
     })
   )
   .action(
-    async ({ parsedInput: { postId, postContent, postContentTextOnly } }) => {
+    async ({
+      parsedInput: { postId, postTitle, postContent, postContentTextOnly },
+    }) => {
       try {
         /** Extract the title and content
          *  The title is h1 tag with the id="post-title"
          */
 
-        const pattern = /<h1[^>]*data-type=["']title["'][^>]*>(.*?)<\/h1>/;
-        // Extract title using regex
-        const titleMatch = postContent.match(pattern);
-        const title = titleMatch ? titleMatch[1].trim() : "Untitled";
+        // const pattern = /<h1[^>]*data-type=["']title["'][^>]*>(.*?)<\/h1>/;
+        // // Extract title using regex
+        // const titleMatch = postContent.match(pattern);
+        // const title = titleMatch ? titleMatch[1].trim() : "Untitled";
 
-        // Remove the title from content
-        const contentWithoutTitle = postContent.replace(pattern, "").trim();
+        // // Remove the title from content
+        // const contentWithoutTitle = postContent.replace(pattern, "").trim();
 
         // Create an excerpt from the content
-        const excerpt = postContentTextOnly?.replace(title, "").trim() || "";
+        const excerpt =
+          postContentTextOnly?.replace(postTitle, "").trim() || "";
         const excerptLimit = 200; // Set the desired excerpt length limit
         const excerptText =
           excerpt.length > excerptLimit
@@ -66,10 +70,10 @@ export const savePostContent = withAuthActions
         await db
           .update(post)
           .set({
-            title: title,
-            content: contentWithoutTitle,
+            title: postTitle,
+            content: postContent,
             excerpt: excerptText,
-            slug: generateSlug(title),
+            slug: generateSlug(postTitle),
             updatedAt: new Date(),
           })
           .where(eq(post.id, postId));
